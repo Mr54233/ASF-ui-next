@@ -14,7 +14,13 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 // https://vite.dev/config/
 export default defineConfig({
   server: {
-    host: true,
+    proxy: {
+      '/api': {
+        target: 'http://192.168.31.236:1243',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
   },
   plugins: [
     vue(),

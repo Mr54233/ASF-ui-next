@@ -6,12 +6,11 @@ const BASE_URL = localStorage.getItem('URL') || ''
 
 // 创建 Axios 实例
 const http: AxiosInstance = axios.create({
-  baseURL: BASE_URL,
-  timeout: 10000,
+  // baseURL: BASE_URL,
+  baseURL: '/api',
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true,
 })
 
 // 请求拦截器

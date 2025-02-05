@@ -6,6 +6,12 @@ import { getASF } from './api/ASF'
 
 onMounted(() => {
   getASF()
+    .then((res) => {
+      console.log('res', res)
+    })
+    .catch((err) => {
+      console.log('err', err)
+    })
 })
 </script>
 
