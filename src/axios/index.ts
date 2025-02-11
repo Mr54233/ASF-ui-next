@@ -1,13 +1,10 @@
 import axios from 'axios'
 import type { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios'
 
-// 获取 BASE_URL
-const BASE_URL = localStorage.getItem('URL') || ''
-
 // 创建 Axios 实例
 const http: AxiosInstance = axios.create({
   // baseURL: BASE_URL,
-  baseURL: '/api',
+  baseURL: '/Api',
   headers: {
     'Content-Type': 'application/json',
   },
