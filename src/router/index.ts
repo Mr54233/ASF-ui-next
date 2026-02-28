@@ -47,7 +47,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'asf-config',
         name: 'asf-config',
-        component: () => import('@/views/AboutView.vue'),
+        component: () => import('@/views/Config.vue'),
         meta: { title: 'ASF 配置' },
       },
     ],

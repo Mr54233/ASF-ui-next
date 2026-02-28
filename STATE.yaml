@@ -1,19 +1,29 @@
 project: ASF-ui-next
-milestone: 6 / 10
-current: "P6 日志（查看 + 导出）"
+milestone: 7 / 10
+current: "P7 配置编辑器（表单 + JSON）"
 status: done
-updated: "2026-02-28T12:45:00Z"
+updated: "2026-02-28T12:50:00Z"
 
 tasks:
-  - id: log-view
+  - id: config-form
     status: done
-    milestone: 6
-    description: "日志查看（时间 + 级别 + 来源 + 消息）"
+    milestone: 7
+    description: "配置表单（全局 + Bot）"
 
-  - id: log-export
+  - id: config-json
     status: done
-    milestone: 6
-    description: "日志导出（下载 + 清空）"
+    milestone: 7
+    description: "JSON 编辑器（语法高亮）"
+
+  - id: config-save
+    status: done
+    milestone: 7
+    description: "保存 + 刷新（确认对话框）"
+
+  - id: config-tabs
+    status: done
+    milestone: 7
+    description: "Tab 分组（全局/Bot/JSON）"
 
 milestones:
   - id: 0
@@ -47,11 +57,11 @@ milestones:
   - id: 7
     name: "配置编辑器"
     commits: 4
-    status: in_progress
+    status: done
   - id: 8
     name: "其他功能"
     commits: 3
-    status: pending
+    status: in_progress
   - id: 9
     name: "收尾"
     commits: 4
