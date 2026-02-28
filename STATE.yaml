@@ -1,8 +1,8 @@
 project: ASF-ui-next
 milestone: 0 / 10
-current: "P0-03 Bot/ASF 完整 TypeScript 类型定义"
+current: "P0-04 API 层补全"
 status: done
-updated: "2026-02-28T08:06:00Z"
+updated: "2026-02-28T08:07:00Z"
 
 tasks:
   - id: setup-dependencies
@@ -18,15 +18,15 @@ tasks:
   - id: types-def
     status: done
     milestone: 0
-    description: "Bot/ASF 完整 TypeScript 类型定义"
+    description: "Bot/ASF 完整 TypeScript 定义"
 
   - id: api-layer
-    status: in_progress
+    status: done
     milestone: 0
     description: "API 层补全（Bot/Command/BGR/ASF）"
 
   - id: pinia-store
-    status: pending
+    status: in_progress
     milestone: 0
     description: "Pinia Store（Asf/Bots/Auth/Settings）+ 持久化"
 
