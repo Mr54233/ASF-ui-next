@@ -46,7 +46,7 @@
             class="connection-status"
             :class="{ connected: asfStore.connected }"
           >
-            <el-icon><CircleFilled /></el-icon>
+            <el-icon><CircleCheckFilled /></el-icon>
           </div>
           <span class="version">ASF {{ asfStore.version }}</span>
         </div>
