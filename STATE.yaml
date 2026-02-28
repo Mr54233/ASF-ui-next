@@ -1,24 +1,19 @@
 project: ASF-ui-next
-milestone: 5 / 10
-current: "P5 BGR 后台兑换（Key 管理）"
+milestone: 6 / 10
+current: "P6 日志（查看 + 导出）"
 status: done
-updated: "2026-02-28T12:40:00Z"
+updated: "2026-02-28T12:45:00Z"
 
 tasks:
-  - id: bgr-keys-list
+  - id: log-view
     status: done
-    milestone: 5
-    description: "BGR Key 列表（待兑换/兑换中/已完成）"
+    milestone: 6
+    description: "日志查看（时间 + 级别 + 来源 + 消息）"
 
-  - id: bgr-add-keys
+  - id: log-export
     status: done
-    milestone: 5
-    description: "添加兑换 Key（批量添加 + 输入验证）"
-
-  - id: bgr-status
-    status: done
-    milestone: 5
-    description: "BGR 状态显示（Bot 统计 + 兑换进度）"
+    milestone: 6
+    description: "日志导出（下载 + 清空）"
 
 milestones:
   - id: 0
@@ -48,11 +43,11 @@ milestones:
   - id: 6
     name: "日志"
     commits: 1
-    status: in_progress
+    status: done
   - id: 7
     name: "配置编辑器"
     commits: 4
-    status: pending
+    status: in_progress
   - id: 8
     name: "其他功能"
     commits: 3
