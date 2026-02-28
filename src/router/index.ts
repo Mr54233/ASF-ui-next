@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'bots',
         name: 'bots',
-        component: () => import('@/views/AboutView.vue'),
+        component: () => import('@/views/Bots.vue'),
         meta: { title: 'Bot 管理' },
       },
       {

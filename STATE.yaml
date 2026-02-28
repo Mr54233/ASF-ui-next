@@ -1,19 +1,49 @@
 project: ASF-ui-next
-milestone: 2 / 10
-current: "P2-01 登录页面 + 响应式"
+milestone: 3 / 10
+current: "P3-01 Bot 列表卡片视图 + 响应式"
 status: done
-updated: "2026-02-28T09:50:00Z"
+updated: "2026-02-28T11:45:00Z"
 
 tasks:
-  - id: login-page
+  - id: bot-list-cards
     status: done
-    milestone: 2
-    description: "登录/Setup 页面（表单 + 验证 + 记住密码）+ 响应式"
+    milestone: 3
+    description: "Bot 列表卡片视图（头像 + 昵称 + 状态 + 挂卡进度）+ 响应式"
 
-  - id: route-guard
-    status: done
-    milestone: 2
-    description: "路由守卫（未登录跳转）"
+  - id: bot-detail-modal
+    status: in_progress
+    milestone: 3
+    description: "Bot 详情弹窗（完整配置 + 操作）"
+
+  - id: bot-batch-ops
+    status: pending
+    milestone: 3
+    description: "Bot 批量操作（启动/停止/暂停/恢复）+ 多选"
+
+  - id: bot-filter
+    status: pending
+    milestone: 3
+    description: "Bot 状态筛选（全部/挂卡中/在线/暂停/离线/禁用）"
+
+  - id: bot-search
+    status: pending
+    milestone: 3
+    description: "Bot 搜索（名称/昵称）"
+
+  - id: bot-progress
+    status: pending
+    milestone: 3
+    description: "Bot 挂卡进度条（游戏数 + 卡片数）"
+
+  - id: bot-quick-actions
+    status: pending
+    milestone: 3
+    description: "Bot 快捷按钮（2FA/BGR/配置/暂停）+ 可配置"
+
+  - id: bot-lifecycle
+    status: pending
+    milestone: 3
+    description: "Bot 创建/删除/重命名 + 确认对话框"
 
 milestones:
   - id: 0
@@ -31,7 +61,7 @@ milestones:
   - id: 3
     name: "Bot 管理"
     commits: 8
-    status: pending
+    status: in_progress
   - id: 4
     name: "命令控制台"
     commits: 2
