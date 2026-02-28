@@ -4,8 +4,15 @@ import { useAuthStore } from '@/stores/auth'
 
 const routes: RouteRecordRaw[] = [
   {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/Login.vue'),
+    meta: { title: '登录', requiresAuth: false },
+  },
+  {
     path: '/',
     component: () => import('@/layouts/AppLayout.vue'),
+    meta: { requiresAuth: true },
     children: [
       {
         path: '',
@@ -48,9 +55,24 @@ const router = createRouter({
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+
   // 设置页面标题
   document.title = to.meta?.title ? `${to.meta.title} - ASF UI` : 'ASF UI'
-  next()
+
+  // 检查是否需要认证
+  const requiresAuth = to.meta?.requiresAuth !== false
+
+  if (requiresAuth && !authStore.authenticated) {
+    // 未登录，跳转到登录页
+    next({ name: 'login', query: { redirect: to.fullPath } })
+  } else if (to.name === 'login' && authStore.authenticated) {
+    // 已登录，跳转到首页或重定向地址
+    const redirect = (to.query?.redirect as string) || '/'
+    next(redirect)
+  } else {
+    next()
+  }
 })
 
 export default router
