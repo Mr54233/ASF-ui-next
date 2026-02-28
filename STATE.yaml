@@ -1,39 +1,34 @@
 project: ASF-ui-next
-milestone: 0 / 10
-current: "P0-06 Mock 数据层 + 测试"
+milestone: 1 / 10
+current: "P1（布局框架 + Dashboard）"
 status: done
-updated: "2026-02-28T08:30:00Z"
+updated: "2026-02-28T08:40:00Z"
 
 tasks:
-  - id: setup-dependencies
+  - id: layout-shell
     status: done
-    milestone: 0
-    description: "安装缺少的依赖：@element-plus/icons-vue + vite-plugin-mock + mockjs + pinia-plugin-persistedstate"
+    milestone: 1
+    description: "整体布局空壳 + 响应式断点（移动端<768px/PC端）"
 
-  - id: theme-config
+  - id: sidebar-nav
     status: done
-    milestone: 0
-    description: "Element Plus 暗色主题配置 + UnoCSS 变量"
+    milestone: 1
+    description: "侧边栏导航 + 移动端收起/展开动画"
 
-  - id: types-def
+  - id: sidebar-stats
     status: done
-    milestone: 0
-    description: "Bot/ASF 完整 TypeScript 类型定义"
+    milestone: 1
+    description: "侧边栏统计数据（Bot 数量 + 挂卡状态）+ 响应式"
 
-  - id: api-layer
+  - id: header
     status: done
-    milestone: 0
-    description: "API 层补全（Bot/Command/BGR/ASF）"
+    milestone: 1
+    description: "Header（连接状态 + ASF 版本 + 全局操作）+ 响应式"
 
-  - id: pinia-store
+  - id: dashboard
     status: done
-    milestone: 0
-    description: "Pinia Store（Asf/Bots/Auth/Settings）+ 持久化"
-
-  - id: mock-data
-    status: done
-    milestone: 0
-    description: "Mock 数据层 + vite-plugin-mock 配置 + 测试"
+    milestone: 1
+    description: "首页数据概览（ECharts 图表）+ 响应式"
 
 milestones:
   - id: 0
@@ -42,8 +37,8 @@ milestones:
     status: done
   - id: 1
     name: "布局框架"
-    commits: 4
-    status: pending
+    commits: 5
+    status: done
   - id: 2
     name: "认证"
     commits: 2

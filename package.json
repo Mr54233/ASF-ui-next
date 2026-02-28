@@ -34,6 +34,7 @@
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.7.0",
     "code-inspector-plugin": "^0.19.2",
+    "echarts": "^6.0.0",
     "eslint": "^9.18.0",
     "eslint-plugin-vue": "^9.32.0",
     "jiti": "^2.4.2",
@@ -51,6 +52,7 @@
     "vite-plugin-mock": "^3.0.2",
     "vite-plugin-vue-devtools": "^7.7.0",
     "vitest": "^3.0.2",
+    "vue-echarts": "^8.0.1",
     "vue-tsc": "^2.2.0"
   }
 }
