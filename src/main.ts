@@ -22,6 +22,15 @@ import {
   Setting,
   House,
   CircleCheckFilled,
+  CopyDocument,
+  Clock,
+  Delete,
+  QuestionFilled,
+  VideoPause,
+  ArrowUp,
+  ArrowRight,
+  WarningFilled,
+  ChatDotRound,
 } from '@element-plus/icons-vue'
 
 import App from './App.vue'
@@ -51,5 +60,14 @@ app.component('Document', Document)
 app.component('Setting', Setting)
 app.component('House', House)
 app.component('CircleCheckFilled', CircleCheckFilled)
+app.component('CopyDocument', CopyDocument)
+app.component('Clock', Clock)
+app.component('Delete', Delete)
+app.component('QuestionFilled', QuestionFilled)
+app.component('VideoPause', VideoPause)
+app.component('ArrowUp', ArrowUp)
+app.component('ArrowRight', ArrowRight)
+app.component('WarningFilled', WarningFilled)
+app.component('ChatDotRound', ChatDotRound)
 
 app.mount('#app')

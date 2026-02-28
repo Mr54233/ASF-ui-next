@@ -1,19 +1,24 @@
 project: ASF-ui-next
-milestone: 4 / 10
-current: "P4 命令控制台"
+milestone: 5 / 10
+current: "P5 BGR 后台兑换（Key 管理）"
 status: done
-updated: "2026-02-28T12:30:00Z"
+updated: "2026-02-28T12:40:00Z"
 
 tasks:
-  - id: command-input
+  - id: bgr-keys-list
     status: done
-    milestone: 4
-    description: "命令输入框（自动补全 + 回车发送）"
+    milestone: 5
+    description: "BGR Key 列表（待兑换/兑换中/已完成）"
 
-  - id: command-history
+  - id: bgr-add-keys
     status: done
-    milestone: 4
-    description: "命令历史记录（上下键导航 + 本地存储）"
+    milestone: 5
+    description: "添加兑换 Key（批量添加 + 输入验证）"
+
+  - id: bgr-status
+    status: done
+    milestone: 5
+    description: "BGR 状态显示（Bot 统计 + 兑换进度）"
 
 milestones:
   - id: 0
@@ -39,11 +44,11 @@ milestones:
   - id: 5
     name: "BGR 后台兑换"
     commits: 2
-    status: in_progress
+    status: done
   - id: 6
     name: "日志"
     commits: 1
-    status: pending
+    status: in_progress
   - id: 7
     name: "配置编辑器"
     commits: 4

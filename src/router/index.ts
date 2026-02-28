@@ -33,6 +33,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '命令控制台' },
       },
       {
+        path: 'bgr',
+        name: 'bgr',
+        component: () => import('@/views/BGR.vue'),
+        meta: { title: 'BGR 后台兑换' },
+      },
+      {
         path: 'log',
         name: 'log',
         component: () => import('@/views/AboutView.vue'),
