@@ -1,8 +1,8 @@
 project: ASF-ui-next
 milestone: 0 / 10
-current: "P0-04 API 层补全"
+current: "P0-05 Pinia Store + 持久化"
 status: done
-updated: "2026-02-28T08:07:00Z"
+updated: "2026-02-28T08:08:00Z"
 
 tasks:
   - id: setup-dependencies
@@ -26,12 +26,12 @@ tasks:
     description: "API 层补全（Bot/Command/BGR/ASF）"
 
   - id: pinia-store
-    status: in_progress
+    status: done
     milestone: 0
     description: "Pinia Store（Asf/Bots/Auth/Settings）+ 持久化"
 
   - id: mock-data
-    status: pending
+    status: in_progress
     milestone: 0
     description: "Mock 数据层 + vite-plugin-mock 配置 + 测试"
 
