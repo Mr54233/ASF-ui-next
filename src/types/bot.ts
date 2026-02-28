@@ -1,3 +1,5 @@
+import type { GenericResponse } from './common'
+
 /**
  * Bot 状态枚举
  */
@@ -6,6 +8,7 @@ export enum BotStatus {
   OFFLINE = 'offline', // 离线
   ONLINE = 'online', // 在线
   FARMING = 'farming', // 挂卡中
+  PAUSED = 'paused', // 暂停
 }
 
 /**

@@ -2,8 +2,8 @@ import http from '@/axios'
 import type {
   BGRStatus,
   BGRAddResponse,
-  GenericResponse,
 } from '@/types/asf'
+import type { GenericResponse } from '@/types/common'
 
 /**
  * 获取 BGR 状态

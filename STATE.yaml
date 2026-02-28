@@ -1,8 +1,8 @@
 project: ASF-ui-next
 milestone: 0 / 10
-current: "P0-05 Pinia Store + 持久化"
+current: "P0-06 Mock 数据层 + 测试"
 status: done
-updated: "2026-02-28T08:08:00Z"
+updated: "2026-02-28T08:30:00Z"
 
 tasks:
   - id: setup-dependencies
@@ -18,7 +18,7 @@ tasks:
   - id: types-def
     status: done
     milestone: 0
-    description: "Bot/ASF 完整 TypeScript 定义"
+    description: "Bot/ASF 完整 TypeScript 类型定义"
 
   - id: api-layer
     status: done
@@ -31,7 +31,7 @@ tasks:
     description: "Pinia Store（Asf/Bots/Auth/Settings）+ 持久化"
 
   - id: mock-data
-    status: in_progress
+    status: done
     milestone: 0
     description: "Mock 数据层 + vite-plugin-mock 配置 + 测试"
 
@@ -39,7 +39,7 @@ milestones:
   - id: 0
     name: "基础工程"
     commits: 6
-    status: in_progress
+    status: done
   - id: 1
     name: "布局框架"
     commits: 4

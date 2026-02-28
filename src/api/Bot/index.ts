@@ -3,9 +3,9 @@ import type {
   BotsResponse,
   BotActionResponse,
   CreateBotConfig,
-  GenericResponse,
 } from './types'
 import type { Bot } from '@/types/bot'
+import type { GenericResponse } from '@/types/common'
 
 /**
  * 获取所有 Bot 信息

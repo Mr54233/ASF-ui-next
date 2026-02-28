@@ -150,7 +150,7 @@ export interface BGRStatus {
   /**
    * 等待兑换的 Key 数量
    */
-  KeysTo Redeem: number
+  KeysToRedeem: number
 
   /**
    * 正在兑换的数量

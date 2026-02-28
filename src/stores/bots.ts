@@ -1,7 +1,8 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { getBots, startBot, stopBot, pauseBot, resumeBot } from '@/api/Bot'
-import type { Bot, BotStatus } from '@/types/bot'
+import type { Bot } from '@/types/bot'
+import { BotStatus } from '@/types/bot'
 import { useAuthStore } from './auth'
 import { useAsfStore } from './asf'
 
@@ -37,27 +38,27 @@ export const useBotsStore = defineStore('bots', () => {
   /**
    * 挂卡中的 Bot 数量
    */
-  const farmingCount = computed(() => botsByStatus.value('farming').length)
+  const farmingCount = computed(() => botsByStatus.value(BotStatus.FARMING).length)
 
   /**
    * 在线的 Bot 数量
    */
-  const onlineCount = computed(() => botsByStatus.value('online').length)
+  const onlineCount = computed(() => botsByStatus.value(BotStatus.ONLINE).length)
 
   /**
    * 暂停的 Bot 数量
    */
-  const pausedCount = computed(() => botsByStatus.value('paused').length)
+  const pausedCount = computed(() => botsByStatus.value(BotStatus.PAUSED).length)
 
   /**
    * 离线的 Bot 数量
    */
-  const offlineCount = computed(() => botsByStatus.value('offline').length)
+  const offlineCount = computed(() => botsByStatus.value(BotStatus.OFFLINE).length)
 
   /**
    * 禁用的 Bot 数量
    */
-  const disabledCount = computed(() => botsByStatus.value('disabled').length)
+  const disabledCount = computed(() => botsByStatus.value(BotStatus.DISABLED).length)
 
   /**
    * 剩余游戏卡片总数

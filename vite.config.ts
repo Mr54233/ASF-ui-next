@@ -28,7 +28,6 @@ export default defineConfig({
     vueDevTools(),
     viteMockServe({
       mockPath: 'mock',
-      include: 'src/mock',
       enable: process.env.VITE_USE_MOCK !== 'false',
     }),
     codeInspectorPlugin({
