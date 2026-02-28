@@ -1,8 +1,8 @@
 project: ASF-ui-next
 milestone: 3 / 10
-current: "P3-03 Bot 批量操作 + 多选"
+current: "P3-04 Bot 状态筛选 + 搜索（集成）"
 status: done
-updated: "2026-02-28T12:10:00Z"
+updated: "2026-02-28T12:15:00Z"
 
 tasks:
   - id: bot-list-cards
@@ -21,27 +21,27 @@ tasks:
     description: "Bot 批量操作（启动/停止/暂停/恢复）+ 多选"
 
   - id: bot-filter
-    status: in_progress
+    status: done
     milestone: 3
     description: "Bot 状态筛选（全部/挂卡中/在线/暂停/离线/禁用）"
 
   - id: bot-search
-    status: pending
+    status: done
     milestone: 3
     description: "Bot 搜索（名称/昵称）"
 
   - id: bot-progress
-    status: pending
+    status: done
     milestone: 3
     description: "Bot 挂卡进度条（游戏数 + 卡片数）"
 
   - id: bot-quick-actions
-    status: pending
+    status: done
     milestone: 3
     description: "Bot 快捷按钮（2FA/BGR/配置/暂停）+ 可配置"
 
   - id: bot-lifecycle
-    status: pending
+    status: in_progress
     milestone: 3
     description: "Bot 创建/删除/重命名 + 确认对话框"
 

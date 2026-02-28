@@ -20,7 +20,7 @@
           <el-button :icon="VideoPause" @click="handleBatchPause">
             暂停
           </el-button>
-          <el-button :icon="CircleClose" @click="handleBatchStop">
+          <el-button :icon="CircleCloseFilled" @click="handleBatchStop">
             停止
           </el-button>
         </el-button-group>
@@ -35,16 +35,38 @@
       </div>
 
       <div class="header-right">
+        <el-input
+          v-model="searchQuery"
+          placeholder="搜索 Bot 名称或昵称"
+          :prefix-icon="Search"
+          clearable
+          style="width: 200px; margin-right: 12px;"
+        />
+
         <el-button type="primary" :icon="Plus" @click="handleCreateBot">
           创建 Bot
         </el-button>
       </div>
     </div>
 
+    <!-- 状态筛选栏 -->
+    <div class="filter-bar">
+      <el-radio-group v-model="filterStatus" @change="handleFilterChange">
+        <el-radio-button :label="null">全部</el-radio-button>
+        <el-radio-button :label="BotStatus.FARMING">
+          挂卡中
+        </el-radio-button>
+        <el-radio-button :label="BotStatus.ONLINE">在线</el-radio-button>
+        <el-radio-button :label="BotStatus.PAUSED">暂停</el-radio-button>
+        <el-radio-button :label="BotStatus.OFFLINE">离线</el-radio-button>
+        <el-radio-button :label="BotStatus.DISABLED">禁用</el-radio-button>
+      </el-radio-group>
+    </div>
+
     <!-- Bot 列表 -->
     <div class="bots-grid">
       <div
-        v-for="bot in botsStore.botsList"
+        v-for="bot in filteredBots"
         :key="bot.BotName"
         class="bot-card"
         :class="{ 'paused': bot.CardsFarmer?.Paused, 'selected': isSelected(bot) }"
@@ -56,74 +78,75 @@
 
         <!-- 卡片内容 -->
         <div @click="handleShowDetail(bot)">
-        <!-- 卡片头部 -->
-        <div class="card-header">
-          <div class="bot-avatar">
-            <img
-              :src="`https://avatars.steamstatic.com/${bot.AvatarHash}_full.jpg`"
-              :alt="bot.Nickname"
-            />
-          </div>
-
-          <div class="bot-info">
-            <div class="bot-nickname">{{ bot.Nickname }}</div>
-            <div class="bot-name">{{ bot.BotName }}</div>
-          </div>
-
-          <div class="bot-status" :class="getStatusClass(bot.Status)">
-            <el-icon><component :is="getStatusIcon(bot.Status)" /></el-icon>
-          </div>
-        </div>
-
-        <!-- 卡片内容 -->
-        <div class="card-body">
-          <!-- 挂卡进度 -->
-          <div class="farming-progress">
-            <div class="progress-info">
-              <span class="label">挂卡进度</span>
-              <span class="value">{{ getProgressText(bot) }}</span>
+          <!-- 卡片头部 -->
+          <div class="card-header">
+            <div class="bot-avatar">
+              <img
+                :src="`https://avatars.steamstatic.com/${bot.AvatarHash}_full.jpg`"
+                :alt="bot.Nickname"
+              />
             </div>
-            <el-progress
-              :percentage="getProgress(bot)"
-              :color="getStatusColor(bot.Status)"
-              :show-text="false"
-            />
-          </div>
 
-          <!-- 统计信息 -->
-          <div class="bot-stats">
-            <div class="stat">
-              <span class="stat-icon"><Grid /></span>
-              <span class="stat-value">{{ bot.GamesToRedeemInBackgroundCount }} BGR</span>
+            <div class="bot-info">
+              <div class="bot-nickname">{{ bot.Nickname }}</div>
+              <div class="bot-name">{{ bot.BotName }}</div>
             </div>
-            <div class="stat">
-              <span class="stat-icon"><Timer /></span>
-              <span class="stat-value">{{ bot.CardsFarmer?.TimeRemaining || '-' }}</span>
+
+            <div class="bot-status" :class="getStatusClass(bot.Status)">
+              <el-icon><component :is="getStatusIcon(bot.Status)" /></el-icon>
             </div>
           </div>
-        </div>
 
-        <!-- 卡片底部 - 快捷按钮 -->
-        <div class="card-footer">
-          <el-button-group>
-            <el-button
-              v-for="btn in quickButtons"
-              :key="btn.name"
-              :type="btn.name === 'pause' && bot.CardsFarmer?.Paused ? 'success' : 'default'"
-              :icon="btn.icon"
-              size="small"
-              @click="handleQuickAction(bot, btn.name)"
-            >
-              {{ btn.label }}
-            </el-button>
-          </el-button-group>
+          <!-- 卡片内容 -->
+          <div class="card-body">
+            <!-- 挂卡进度 -->
+            <div class="farming-progress">
+              <div class="progress-info">
+                <span class="label">挂卡进度</span>
+                <span class="value">{{ getProgressText(bot) }}</span>
+              </div>
+              <el-progress
+                :percentage="getProgress(bot)"
+                :color="getStatusColor(bot.Status)"
+                :show-text="false"
+              />
+            </div>
+
+            <!-- 统计信息 -->
+            <div class="bot-stats">
+              <div class="stat">
+                <span class="stat-icon"><Grid /></span>
+                <span class="stat-value">{{ bot.GamesToRedeemInBackgroundCount }} BGR</span>
+              </div>
+              <div class="stat">
+                <span class="stat-icon"><Timer /></span>
+                <span class="stat-value">{{ bot.CardsFarmer?.TimeRemaining || '-' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 卡片底部 - 快捷按钮 -->
+          <div class="card-footer">
+            <el-button-group>
+              <el-button
+                v-for="btn in quickButtons"
+                :key="btn.name"
+                :type="btn.name === 'pause' && bot.CardsFarmer?.Paused ? 'success' : 'default'"
+                :icon="btn.icon"
+                size="small"
+                @click="handleQuickAction(bot, btn.name)"
+              >
+                {{ btn.label }}
+              </el-button>
+            </el-button-group>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- 空状态 -->
-    <el-empty v-if="botsStore.botsList.length === 0" description="暂无 Bot">
-      <el-button type="primary" @click="handleCreateBot">创建 Bot</el-button>
+    <el-empty v-if="filteredBots.length === 0" description="没有找到 Bot">
+      <el-button @click="handleClearFilter">清除筛选</el-button>
     </el-empty>
 
     <!-- Bot 详情弹窗 -->
@@ -136,7 +159,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useBotsStore } from '@/stores/bots'
 import { useSettingsStore } from '@/stores/settings'
@@ -156,7 +179,9 @@ import {
   CircleCloseFilled,
   Connection,
   CircleCheck,
+  Search,
 } from '@element-plus/icons-vue'
+import BotDetailDialog from '@/components/BotDetailDialog.vue'
 
 const router = useRouter()
 const botsStore = useBotsStore()
@@ -169,11 +194,15 @@ const selectedBot = ref<Bot | null>(null)
 // 批量选择
 const selectedBots = ref<Bot[]>([])
 
+// 搜索和筛选
+const searchQuery = ref('')
+const filterStatus = ref<BotStatus | null>(null)
+
 // 是否全选
 const isAllSelected = computed(() => {
   return (
-    botsStore.botsList.length > 0 &&
-    selectedBots.value.length === botsStore.botsList.length
+    filteredBots.value.length > 0 &&
+    selectedBots.value.length === filteredBots.value.length
   )
 })
 
@@ -181,8 +210,31 @@ const isAllSelected = computed(() => {
 const isIndeterminate = computed(() => {
   return (
     selectedBots.value.length > 0 &&
-    selectedBots.value.length < botsStore.botsList.length
+    selectedBots.value.length < filteredBots.value.length
   )
+})
+
+// 过滤后的 Bot 列表
+const filteredBots = computed(() => {
+  let bots = botsStore.botsList
+
+  // 搜索过滤
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase()
+    bots = bots.filter((bot) => {
+      return (
+        bot.BotName.toLowerCase().includes(query) ||
+        bot.Nickname.toLowerCase().includes(query)
+      )
+    })
+  }
+
+  // 状态筛选
+  if (filterStatus.value !== null) {
+    bots = bots.filter((bot) => bot.Status === filterStatus.value)
+  }
+
+  return bots
 })
 
 // 快捷按钮配置
@@ -261,11 +313,6 @@ function getProgressText(bot: Bot) {
       (sum, game) => sum + game.CardsRemaining,
       0
     ) ?? 0
-  const total =
-    bot.CardsFarmer?.GamesToFarm?.reduce(
-      (sum, game) => sum + game.CardsRemaining,
-      0
-    ) ?? 0
   return `${remaining} 卡片`
 }
 
@@ -285,38 +332,16 @@ async function handleCreateBot() {
   ElMessage.info('创建 Bot 功能开发中...')
 }
 
-// 快捷操作
-async function handleQuickAction(bot: Bot, action: string) {
-  switch (action) {
-    case 'pause':
-      if (bot.CardsFarmer?.Paused) {
-        await botsStore.resumeBots([bot.BotName])
-      } else {
-        await botsStore.pauseBots([bot.BotName])
-      }
-      break
-    case '2fa':
-      ElMessage.info('2FA 功能开发中...')
-      break
-    case 'bgr':
-      ElMessage.info('BGR 功能开发中...')
-      break
-    case 'config':
-      ElMessage.info('配置功能开发中...')
-      break
-  }
+// 清除筛选
+function handleClearFilter() {
+  searchQuery.value = ''
+  filterStatus.value = null
 }
 
-// 显示 Bot 详情
-function handleShowDetail(bot: Bot) {
-  selectedBot.value = bot
-  showDetailDialog.value = true
-}
-
-// 编辑配置
-function handleEditConfig(bot: Bot) {
-  ElMessage.info('编辑配置功能开发中...')
-  // TODO: 打开配置编辑器
+// 筛选变化
+function handleFilterChange() {
+  // 筛选时清空选中
+  selectedBots.value = []
 }
 
 // 检查是否选中
@@ -340,7 +365,7 @@ function handleSelect(bot: Bot, checked: boolean): void {
 // 全选/取消全选
 function handleSelectAll(checked: boolean): void {
   if (checked) {
-    selectedBots.value = [...botsStore.botsList]
+    selectedBots.value = [...filteredBots.value]
   } else {
     selectedBots.value = []
   }
@@ -372,6 +397,40 @@ async function handleBatchStop() {
     selectedBots.value = []
   }
 }
+
+// 显示 Bot 详情
+function handleShowDetail(bot: Bot) {
+  selectedBot.value = bot
+  showDetailDialog.value = true
+}
+
+// 编辑配置
+function handleEditConfig(bot: Bot) {
+  ElMessage.info('编辑配置功能开发中...')
+  // TODO: 打开配置编辑器
+}
+
+// 快捷操作
+async function handleQuickAction(bot: Bot, action: string) {
+  switch (action) {
+    case 'pause':
+      if (bot.CardsFarmer?.Paused) {
+        await botsStore.resumeBots([bot.BotName])
+      } else {
+        await botsStore.pauseBots([bot.BotName])
+      }
+      break
+    case '2fa':
+      ElMessage.info('2FA 功能开发中...')
+      break
+    case 'bgr':
+      ElMessage.info('BGR 功能开发中...')
+      break
+    case 'config':
+      ElMessage.info('配置功能开发中...')
+      break
+  }
+}
 </script>
 
 <style scoped lang="less">
@@ -400,6 +459,30 @@ async function handleBatchStop() {
     gap: 8px;
   }
 
+  // 状态筛选栏
+  .filter-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+
+    :deep(.el-radio-button__inner) {
+      background-color: #262727;
+      border-color: #4c4d4f;
+      color: #cfd3dc;
+
+      &:hover {
+        color: #e5eaf3;
+        background-color: #363738;
+      }
+    }
+
+    :deep(.el-radio-button__original-radio:checked + .el-radio-button__inner) {
+      background-color: #409eff;
+      border-color: #409eff;
+      color: #ffffff;
+    }
+  }
+
   // 页面标题 + 操作栏
   .page-header {
     display: flex;
@@ -423,6 +506,11 @@ async function handleBatchStop() {
         color: #e5eaf3;
         font-size: 24px;
       }
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
     }
   }
 }
@@ -641,6 +729,27 @@ async function handleBatchStop() {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+
+    .header-right {
+      width: 100%;
+      flex-direction: column;
+      gap: 12px;
+
+      :deep(.el-input) {
+        width: 100% !important;
+      }
+
+      .el-button {
+        width: 100%;
+      }
+    }
+  }
+
+  .filter-bar {
+    :deep(.el-radio-button__inner) {
+      padding: 8px 12px;
+      font-size: 12px;
+    }
   }
 
   .batch-toolbar {
