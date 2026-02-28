@@ -2,7 +2,7 @@ project: ASF-ui-next
 milestone: 3 / 10
 current: "P3-03 Bot 批量操作 + 多选"
 status: done
-updated: "2026-02-28T12:05:00Z"
+updated: "2026-02-28T12:10:00Z"
 
 tasks:
   - id: bot-list-cards

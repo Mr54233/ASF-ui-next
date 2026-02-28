@@ -1,7 +1,34 @@
 <template>
   <div class="bots-page">
+    <!-- 批量操作栏 -->
+    <div v-if="selectedBots.length > 0" class="batch-toolbar">
+      <div class="toolbar-left">
+        <el-checkbox
+          :indeterminate="isIndeterminate"
+          :model-value="isAllSelected"
+          @change="handleSelectAll"
+        >
+          已选 {{ selectedBots.length }} 个
+        </el-checkbox>
+      </div>
+
+      <div class="toolbar-right">
+        <el-button-group>
+          <el-button :icon="VideoPlay" @click="handleBatchStart">
+            启动
+          </el-button>
+          <el-button :icon="VideoPause" @click="handleBatchPause">
+            暂停
+          </el-button>
+          <el-button :icon="CircleClose" @click="handleBatchStop">
+            停止
+          </el-button>
+        </el-button-group>
+      </div>
+    </div>
+
     <!-- 页面标题 + 操作栏 -->
-    <div class="page-header">
+    <div class="page-header" :class="{ 'shrink': selectedBots.length > 0 }">
       <div class="header-left">
         <h2>Bot 管理</h2>
         <el-tag type="info" size="large">{{ botsStore.botsCount }} 个 Bot</el-tag>
@@ -20,9 +47,15 @@
         v-for="bot in botsStore.botsList"
         :key="bot.BotName"
         class="bot-card"
-        :class="{ 'paused': bot.CardsFarmer?.Paused }"
-        @click="handleShowDetail(bot)"
+        :class="{ 'paused': bot.CardsFarmer?.Paused, 'selected': isSelected(bot) }"
       >
+        <!-- 复选框 -->
+        <div class="card-checkbox" @click.stop>
+          <el-checkbox :model-value="isSelected(bot)" @change="(val: boolean) => handleSelect(bot, val)" />
+        </div>
+
+        <!-- 卡片内容 -->
+        <div @click="handleShowDetail(bot)">
         <!-- 卡片头部 -->
         <div class="card-header">
           <div class="bot-avatar">
@@ -132,6 +165,25 @@ const settingsStore = useSettingsStore()
 // Bot 详情弹窗
 const showDetailDialog = ref(false)
 const selectedBot = ref<Bot | null>(null)
+
+// 批量选择
+const selectedBots = ref<Bot[]>([])
+
+// 是否全选
+const isAllSelected = computed(() => {
+  return (
+    botsStore.botsList.length > 0 &&
+    selectedBots.value.length === botsStore.botsList.length
+  )
+})
+
+// 是否半选
+const isIndeterminate = computed(() => {
+  return (
+    selectedBots.value.length > 0 &&
+    selectedBots.value.length < botsStore.botsList.length
+  )
+})
 
 // 快捷按钮配置
 const quickButtons = computed(() => {
@@ -266,15 +318,100 @@ function handleEditConfig(bot: Bot) {
   ElMessage.info('编辑配置功能开发中...')
   // TODO: 打开配置编辑器
 }
+
+// 检查是否选中
+function isSelected(bot: Bot): boolean {
+  return selectedBots.value.some((b) => b.BotName === bot.BotName)
+}
+
+// 选择/取消选择 Bot
+function handleSelect(bot: Bot, checked: boolean): void {
+  if (checked) {
+    if (!isSelected(bot)) {
+      selectedBots.value.push(bot)
+    }
+  } else {
+    selectedBots.value = selectedBots.value.filter(
+      (b) => b.BotName !== bot.BotName
+    )
+  }
+}
+
+// 全选/取消全选
+function handleSelectAll(checked: boolean): void {
+  if (checked) {
+    selectedBots.value = [...botsStore.botsList]
+  } else {
+    selectedBots.value = []
+  }
+}
+
+// 批量启动
+async function handleBatchStart() {
+  const botNames = selectedBots.value.map((b) => b.BotName)
+  const result = await botsStore.startBots(botNames)
+  if (result.success) {
+    selectedBots.value = []
+  }
+}
+
+// 批量暂停
+async function handleBatchPause() {
+  const botNames = selectedBots.value.map((b) => b.BotName)
+  const result = await botsStore.pauseBots(botNames)
+  if (result.success) {
+    selectedBots.value = []
+  }
+}
+
+// 批量停止
+async function handleBatchStop() {
+  const botNames = selectedBots.value.map((b) => b.BotName)
+  const result = await botsStore.stopBots(botNames)
+  if (result.success) {
+    selectedBots.value = []
+  }
+}
 </script>
 
 <style scoped lang="less">
 .bots-page {
+  // 批量操作栏
+  .batch-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: #262727;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #409eff;
+    animation: slideDown 0.3s ease;
+  }
+
+  .toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .toolbar-right {
+    display: flex;
+    gap: 8px;
+  }
+
+  // 页面标题 + 操作栏
   .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
+    transition: all 0.3s;
+
+    &.shrink {
+      margin-bottom: 12px;
+      transform: scale(0.98);
+    }
 
     .header-left {
       display: flex;
@@ -287,6 +424,18 @@ function handleEditConfig(bot: Bot) {
         font-size: 24px;
       }
     }
+  }
+}
+
+// 批量操作栏动画
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -303,6 +452,7 @@ function handleEditConfig(bot: Bot) {
   border-radius: 12px;
   border: 1px solid #2b2b2c;
   overflow: hidden;
+  position: relative;
   transition: all 0.3s;
 
   &:hover {
@@ -313,6 +463,33 @@ function handleEditConfig(bot: Bot) {
 
   &.paused {
     border-color: #e6a23c;
+  }
+
+  &.selected {
+    border-color: #409eff;
+    background-color: rgba(64, 158, 255, 0.05);
+  }
+}
+
+// 卡片复选框
+.card-checkbox {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 10;
+  background-color: #141414;
+  border-radius: 4px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+  :deep(.el-checkbox__inner) {
+    background-color: #262727;
+    border-color: #4c4d4f;
+  }
+
+  :deep(.el-checkbox__input:checked .el-checkbox__inner) {
+    background-color: #409eff;
+    border-color: #409eff;
   }
 }
 
@@ -464,6 +641,26 @@ function handleEditConfig(bot: Bot) {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+  }
+
+  .batch-toolbar {
+    flex-direction: column;
+    gap: 12px;
+
+    .toolbar-left,
+    .toolbar-right {
+      width: 100%;
+    }
+
+    .toolbar-right {
+      .el-button-group {
+        width: 100%;
+
+        .el-button {
+          flex: 1;
+        }
+      }
+    }
   }
 }
 
