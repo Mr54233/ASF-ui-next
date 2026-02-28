@@ -1,8 +1,8 @@
 project: ASF-ui-next
 milestone: 3 / 10
-current: "P3-04 Bot 状态筛选 + 搜索（集成）"
+current: "P3-08 Bot 生命周期（创建/删除/重命名）"
 status: done
-updated: "2026-02-28T12:15:00Z"
+updated: "2026-02-28T12:20:00Z"
 
 tasks:
   - id: bot-list-cards
@@ -41,7 +41,7 @@ tasks:
     description: "Bot 快捷按钮（2FA/BGR/配置/暂停）+ 可配置"
 
   - id: bot-lifecycle
-    status: in_progress
+    status: done
     milestone: 3
     description: "Bot 创建/删除/重命名 + 确认对话框"
 
@@ -61,11 +61,11 @@ milestones:
   - id: 3
     name: "Bot 管理"
     commits: 8
-    status: in_progress
+    status: done
   - id: 4
     name: "命令控制台"
     commits: 2
-    status: pending
+    status: in_progress
   - id: 5
     name: "BGR 后台兑换"
     commits: 2

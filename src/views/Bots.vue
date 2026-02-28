@@ -23,6 +23,9 @@
           <el-button :icon="CircleCloseFilled" @click="handleBatchStop">
             停止
           </el-button>
+          <el-button :icon="Delete" type="danger" @click="handleBatchDelete">
+            删除
+          </el-button>
         </el-button-group>
       </div>
     </div>
@@ -138,6 +141,12 @@
               >
                 {{ btn.label }}
               </el-button>
+              <el-button :icon="Edit" size="small" @click.stop="handleRenameBot(bot)">
+                重命名
+              </el-button>
+              <el-button :icon="Delete" type="danger" size="small" @click.stop="handleDeleteBot(bot)">
+                删除
+              </el-button>
             </el-button-group>
           </div>
         </div>
@@ -155,6 +164,39 @@
       :bot="selectedBot"
       @edit-config="handleEditConfig"
     />
+
+    <!-- 创建 Bot 弹窗 -->
+    <CreateBotDialog
+      v-model="showCreateDialog"
+      @success="handleCreateSuccess"
+    />
+
+    <!-- 重命名 Bot 弹窗 -->
+    <el-dialog
+      v-model="showRenameDialog"
+      title="重命名 Bot"
+      width="400px"
+    >
+      <el-form label-position="top">
+        <el-form-item label="新名称">
+          <el-input
+            v-model="renameForm.newName"
+            placeholder="输入新的 Bot 名称"
+            clearable
+            @keyup.enter="handleConfirmRename"
+          />
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="showRenameDialog = false">取消</el-button>
+          <el-button type="primary" @click="handleConfirmRename">
+            确认
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -180,8 +222,11 @@ import {
   Connection,
   CircleCheck,
   Search,
+  Delete,
+  Edit,
 } from '@element-plus/icons-vue'
 import BotDetailDialog from '@/components/BotDetailDialog.vue'
+import CreateBotDialog from '@/components/CreateBotDialog.vue'
 
 const router = useRouter()
 const botsStore = useBotsStore()
@@ -190,6 +235,16 @@ const settingsStore = useSettingsStore()
 // Bot 详情弹窗
 const showDetailDialog = ref(false)
 const selectedBot = ref<Bot | null>(null)
+
+// 创建 Bot 弹窗
+const showCreateDialog = ref(false)
+
+// 重命名弹窗
+const showRenameDialog = ref(false)
+const renameBot = ref<Bot | null>(null)
+const renameForm = reactive({
+  newName: '',
+})
 
 // 批量选择
 const selectedBots = ref<Bot[]>([])
@@ -408,6 +463,96 @@ function handleShowDetail(bot: Bot) {
 function handleEditConfig(bot: Bot) {
   ElMessage.info('编辑配置功能开发中...')
   // TODO: 打开配置编辑器
+}
+
+// 创建 Bot
+function handleCreateBot() {
+  showCreateDialog.value = true
+}
+
+// 创建成功回调
+function handleCreateSuccess(botConfig: any) {
+  ElMessage.success(`Bot "${botConfig.BotName}" 创建成功`)
+  showCreateDialog.value = false
+  // TODO: 刷新 Bot 列表
+}
+
+// 重命名 Bot
+function handleRenameBot(bot: Bot) {
+  renameBot.value = bot
+  renameForm.newName = bot.BotName
+  showRenameDialog.value = true
+}
+
+// 确认重命名
+async function handleConfirmRename() {
+  if (!renameForm.newName || !renameBot.value) return
+
+  try {
+    // TODO: 调用重命名 API
+    // await renameBot(renameBot.value.BotName, renameForm.newName)
+    await new Promise((resolve) => setTimeout(resolve, 500))
+
+    ElMessage.success(`Bot 重命名为 "${renameForm.newName}"`)
+    showRenameDialog.value = false
+    // TODO: 刷新 Bot 列表
+  } catch (error) {
+    console.error('Rename error:', error)
+    ElMessage.error('重命名失败')
+  }
+}
+
+// 删除 Bot
+async function handleDeleteBot(bot: Bot) {
+  try {
+    await ElMessageBox.confirm(
+      `确定要删除 Bot "${bot.BotName}" 吗？`,
+      '确认删除',
+      {
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    )
+
+    // TODO: 调用删除 API
+    // await deleteBot([bot.BotName])
+    await new Promise((resolve) => setTimeout(resolve, 500))
+
+    ElMessage.success(`Bot "${bot.BotName}" 已删除`)
+    // TODO: 刷新 Bot 列表
+  } catch (error) {
+    // 用户取消
+  }
+}
+
+// 批量删除
+async function handleBatchDelete() {
+  if (selectedBots.value.length === 0) return
+
+  const names = selectedBots.value.map((b) => b.BotName).join(', ')
+  try {
+    await ElMessageBox.confirm(
+      `确定要删除选中的 ${selectedBots.value.length} 个 Bot 吗？\n${names}`,
+      '确认批量删除',
+      {
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    )
+
+    // TODO: 调用批量删除 API
+    // const botNames = selectedBots.value.map((b) => b.BotName)
+    // await deleteBot(botNames)
+    await new Promise((resolve) => setTimeout(resolve, 500))
+
+    ElMessage.success(`已删除 ${selectedBots.value.length} 个 Bot`)
+    selectedBots.value = []
+    // TODO: 刷新 Bot 列表
+  } catch (error) {
+    // 用户取消
+  }
 }
 
 // 快捷操作
@@ -717,6 +862,15 @@ async function handleQuickAction(bot: Bot, action: string) {
   border-top: 1px solid #2b2b2c;
   display: flex;
   justify-content: center;
+
+  :deep(.el-button-group) {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  :deep(.el-button) {
+    flex-shrink: 0;
+  }
 }
 
 // 响应式
