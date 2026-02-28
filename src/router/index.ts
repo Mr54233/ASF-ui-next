@@ -29,7 +29,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'commands',
         name: 'commands',
-        component: () => import('@/views/AboutView.vue'),
+        component: () => import('@/views/Commands.vue'),
         meta: { title: '命令控制台' },
       },
       {

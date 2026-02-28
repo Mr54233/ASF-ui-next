@@ -1,49 +1,19 @@
 project: ASF-ui-next
-milestone: 3 / 10
-current: "P3-08 Bot 生命周期（创建/删除/重命名）"
+milestone: 4 / 10
+current: "P4 命令控制台"
 status: done
-updated: "2026-02-28T12:20:00Z"
+updated: "2026-02-28T12:30:00Z"
 
 tasks:
-  - id: bot-list-cards
+  - id: command-input
     status: done
-    milestone: 3
-    description: "Bot 列表卡片视图（头像 + 昵称 + 状态 + 挂卡进度）+ 响应式"
+    milestone: 4
+    description: "命令输入框（自动补全 + 回车发送）"
 
-  - id: bot-detail-modal
+  - id: command-history
     status: done
-    milestone: 3
-    description: "Bot 详情弹窗（完整配置 + 操作）"
-
-  - id: bot-batch-ops
-    status: done
-    milestone: 3
-    description: "Bot 批量操作（启动/停止/暂停/恢复）+ 多选"
-
-  - id: bot-filter
-    status: done
-    milestone: 3
-    description: "Bot 状态筛选（全部/挂卡中/在线/暂停/离线/禁用）"
-
-  - id: bot-search
-    status: done
-    milestone: 3
-    description: "Bot 搜索（名称/昵称）"
-
-  - id: bot-progress
-    status: done
-    milestone: 3
-    description: "Bot 挂卡进度条（游戏数 + 卡片数）"
-
-  - id: bot-quick-actions
-    status: done
-    milestone: 3
-    description: "Bot 快捷按钮（2FA/BGR/配置/暂停）+ 可配置"
-
-  - id: bot-lifecycle
-    status: done
-    milestone: 3
-    description: "Bot 创建/删除/重命名 + 确认对话框"
+    milestone: 4
+    description: "命令历史记录（上下键导航 + 本地存储）"
 
 milestones:
   - id: 0
@@ -65,11 +35,11 @@ milestones:
   - id: 4
     name: "命令控制台"
     commits: 2
-    status: in_progress
+    status: done
   - id: 5
     name: "BGR 后台兑换"
     commits: 2
-    status: pending
+    status: in_progress
   - id: 6
     name: "日志"
     commits: 1
