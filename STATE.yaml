@@ -1,0 +1,78 @@
+project: ASF-ui-next
+milestone: 0 / 10
+current: "P0-01 安装缺少的依赖"
+status: done
+updated: "2026-02-28T08:03:00Z"
+
+tasks:
+  - id: setup-dependencies
+    status: done
+    milestone: 0
+    description: "安装缺少的依赖：@element-plus/icons-vue + vite-plugin-mock + mockjs + pinia-plugin-persistedstate"
+
+  - id: theme-config
+    status: in_progress
+    milestone: 0
+    description: "Element Plus 暗色主题配置 + UnoCSS 变量"
+
+  - id: types-def
+    status: pending
+    milestone: 0
+    description: "Bot/ASF 完整 TypeScript 类型定义"
+
+  - id: api-layer
+    status: pending
+    milestone: 0
+    description: "API 层补全（Bot/Command/BGR/ASF）"
+
+  - id: pinia-store
+    status: pending
+    milestone: 0
+    description: "Pinia Store（Asf/Bots/Auth/Settings）+ 持久化"
+
+  - id: mock-data
+    status: pending
+    milestone: 0
+    description: "Mock 数据层 + vite-plugin-mock 配置 + 测试"
+
+milestones:
+  - id: 0
+    name: "基础工程"
+    commits: 6
+    status: in_progress
+  - id: 1
+    name: "布局框架"
+    commits: 4
+    status: pending
+  - id: 2
+    name: "认证"
+    commits: 2
+    status: pending
+  - id: 3
+    name: "Bot 管理"
+    commits: 8
+    status: pending
+  - id: 4
+    name: "命令控制台"
+    commits: 2
+    status: pending
+  - id: 5
+    name: "BGR 后台兑换"
+    commits: 2
+    status: pending
+  - id: 6
+    name: "日志"
+    commits: 1
+    status: pending
+  - id: 7
+    name: "配置编辑器"
+    commits: 4
+    status: pending
+  - id: 8
+    name: "其他功能"
+    commits: 3
+    status: pending
+  - id: 9
+    name: "收尾"
+    commits: 4
+    status: pending
