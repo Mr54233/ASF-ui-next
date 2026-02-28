@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import { viteMockServe } from 'vite-plugin-mock'
 
 import { codeInspectorPlugin } from 'code-inspector-plugin'
 import UnoCSS from 'unocss/vite'
@@ -25,6 +26,11 @@ export default defineConfig({
     vue(),
     vueJsx(),
     vueDevTools(),
+    viteMockServe({
+      mockPath: 'mock',
+      include: 'src/mock',
+      enable: process.env.VITE_USE_MOCK !== 'false',
+    }),
     codeInspectorPlugin({
       bundler: 'vite',
     }),

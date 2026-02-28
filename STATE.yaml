@@ -1,8 +1,8 @@
 project: ASF-ui-next
 milestone: 0 / 10
-current: "P0-01 安装缺少的依赖"
+current: "P0-02 Element Plus 暗色主题配置"
 status: done
-updated: "2026-02-28T08:03:00Z"
+updated: "2026-02-28T08:05:00Z"
 
 tasks:
   - id: setup-dependencies
@@ -11,12 +11,12 @@ tasks:
     description: "安装缺少的依赖：@element-plus/icons-vue + vite-plugin-mock + mockjs + pinia-plugin-persistedstate"
 
   - id: theme-config
-    status: in_progress
+    status: done
     milestone: 0
     description: "Element Plus 暗色主题配置 + UnoCSS 变量"
 
   - id: types-def
-    status: pending
+    status: in_progress
     milestone: 0
     description: "Bot/ASF 完整 TypeScript 类型定义"
 
