@@ -45,10 +45,22 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '日志' },
       },
       {
+        path: 'bgr',
+        name: 'bgr',
+        component: () => import('@/views/BGR.vue'),
+        meta: { title: 'BGR 后台兑换' },
+      },
+      {
         path: 'asf-config',
         name: 'asf-config',
         component: () => import('@/views/Config.vue'),
         meta: { title: 'ASF 配置' },
+      },
+      {
+        path: 'about',
+        name: 'about',
+        component: () => import('@/views/About.vue'),
+        meta: { title: '关于' },
       },
     ],
   },

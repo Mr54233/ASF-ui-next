@@ -1,29 +1,24 @@
 project: ASF-ui-next
-milestone: 7 / 10
-current: "P7 配置编辑器（表单 + JSON）"
-status: done
-updated: "2026-02-28T12:50:00Z"
+milestone: 8 / 10
+current: "P8-02 响应式优化"
+status: in_progress
+updated: "2026-02-28T12:55:00Z"
 
 tasks:
-  - id: config-form
+  - id: about-page
     status: done
-    milestone: 7
-    description: "配置表单（全局 + Bot）"
+    milestone: 8
+    description: "关于页面（版本 + 链接）"
 
-  - id: config-json
-    status: done
-    milestone: 7
-    description: "JSON 编辑器（语法高亮）"
+  - id: responsive-opt
+    status: in_progress
+    milestone: 8
+    description: "响应式优化（移动端体验）"
 
-  - id: config-save
-    status: done
-    milestone: 7
-    description: "保存 + 刷新（确认对话框）"
-
-  - id: config-tabs
-    status: done
-    milestone: 7
-    description: "Tab 分组（全局/Bot/JSON）"
+  - id: theme-switch
+    status: pending
+    milestone: 8
+    description: "暗色/亮色主题切换"
 
 milestones:
   - id: 0
