@@ -1,38 +1,21 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 import { onMounted } from 'vue'
-import { getASF } from './api/ASF'
+import { useSettingsStore } from '@/stores/settings'
+
+const settingsStore = useSettingsStore()
 
 onMounted(() => {
-  getASF()
-    .then((res) => {
-      console.log('res', res)
-    })
-    .catch((err) => {
-      console.log('err', err)
-    })
+  // 应用暗色主题
+  settingsStore.applyTheme()
 })
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-    <div class="test">
-      <div>123</div>
-    </div>
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <router-view />
 </template>
-
-<style scoped lang="less"></style>
+<style lang="less">
+#app {
+  min-height: 100vh;
+  background-color: #0a0a0a;
+}
+</style>
