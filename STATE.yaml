@@ -1,8 +1,8 @@
 project: ASF-ui-next
 milestone: 8 / 10
-current: "P8-02 响应式优化"
+current: "P8 其他功能（响应式优化）"
 status: in_progress
-updated: "2026-02-28T12:55:00Z"
+updated: "2026-02-28T13:00:00Z"
 
 tasks:
   - id: about-page
@@ -11,12 +11,12 @@ tasks:
     description: "关于页面（版本 + 链接）"
 
   - id: responsive-opt
-    status: in_progress
+    status: done
     milestone: 8
     description: "响应式优化（移动端体验）"
 
   - id: theme-switch
-    status: pending
+    status: in_progress
     milestone: 8
     description: "暗色/亮色主题切换"
 

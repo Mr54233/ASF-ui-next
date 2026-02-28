@@ -1,5 +1,8 @@
 <template>
   <div class="app-layout" :class="{ 'sidebar-collapsed': settingsStore.sidebarCollapsed }">
+    <!-- 移动端遮罩 -->
+    <div class="sidebar-overlay" @click="settingsStore.toggleSidebar"></div>
+
     <!-- 侧边栏 -->
     <aside class="app-sidebar" :class="{ 'collapsed': settingsStore.sidebarCollapsed }">
       <div class="sidebar-header">
@@ -314,6 +317,22 @@ async function shutdownASF() {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+// 移动端遮罩
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
 }
 
 // 响应式 - 移动端
