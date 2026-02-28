@@ -21,6 +21,7 @@
         :key="bot.BotName"
         class="bot-card"
         :class="{ 'paused': bot.CardsFarmer?.Paused }"
+        @click="handleShowDetail(bot)"
       >
         <!-- 卡片头部 -->
         <div class="card-header">
@@ -91,6 +92,13 @@
     <el-empty v-if="botsStore.botsList.length === 0" description="暂无 Bot">
       <el-button type="primary" @click="handleCreateBot">创建 Bot</el-button>
     </el-empty>
+
+    <!-- Bot 详情弹窗 -->
+    <BotDetailDialog
+      v-model="showDetailDialog"
+      :bot="selectedBot"
+      @edit-config="handleEditConfig"
+    />
   </div>
 </template>
 
@@ -120,6 +128,10 @@ import {
 const router = useRouter()
 const botsStore = useBotsStore()
 const settingsStore = useSettingsStore()
+
+// Bot 详情弹窗
+const showDetailDialog = ref(false)
+const selectedBot = ref<Bot | null>(null)
 
 // 快捷按钮配置
 const quickButtons = computed(() => {
@@ -241,6 +253,18 @@ async function handleQuickAction(bot: Bot, action: string) {
       ElMessage.info('配置功能开发中...')
       break
   }
+}
+
+// 显示 Bot 详情
+function handleShowDetail(bot: Bot) {
+  selectedBot.value = bot
+  showDetailDialog.value = true
+}
+
+// 编辑配置
+function handleEditConfig(bot: Bot) {
+  ElMessage.info('编辑配置功能开发中...')
+  // TODO: 打开配置编辑器
 }
 </script>
 

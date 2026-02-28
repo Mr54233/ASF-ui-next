@@ -1,8 +1,8 @@
 project: ASF-ui-next
 milestone: 3 / 10
-current: "P3-01 Bot 列表卡片视图 + 响应式"
+current: "P3-02 Bot 详情弹窗 + 集成"
 status: done
-updated: "2026-02-28T11:45:00Z"
+updated: "2026-02-28T12:00:00Z"
 
 tasks:
   - id: bot-list-cards
@@ -11,12 +11,12 @@ tasks:
     description: "Bot 列表卡片视图（头像 + 昵称 + 状态 + 挂卡进度）+ 响应式"
 
   - id: bot-detail-modal
-    status: in_progress
+    status: done
     milestone: 3
     description: "Bot 详情弹窗（完整配置 + 操作）"
 
   - id: bot-batch-ops
-    status: pending
+    status: in_progress
     milestone: 3
     description: "Bot 批量操作（启动/停止/暂停/恢复）+ 多选"
 
