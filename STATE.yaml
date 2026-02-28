@@ -1,8 +1,8 @@
 project: ASF-ui-next
 milestone: 0 / 10
-current: "P0-02 Element Plus 暗色主题配置"
+current: "P0-03 Bot/ASF 完整 TypeScript 类型定义"
 status: done
-updated: "2026-02-28T08:05:00Z"
+updated: "2026-02-28T08:06:00Z"
 
 tasks:
   - id: setup-dependencies
@@ -16,12 +16,12 @@ tasks:
     description: "Element Plus 暗色主题配置 + UnoCSS 变量"
 
   - id: types-def
-    status: in_progress
+    status: done
     milestone: 0
     description: "Bot/ASF 完整 TypeScript 类型定义"
 
   - id: api-layer
-    status: pending
+    status: in_progress
     milestone: 0
     description: "API 层补全（Bot/Command/BGR/ASF）"
 
