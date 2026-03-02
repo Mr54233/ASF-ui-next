@@ -23,16 +23,14 @@ export const useBotsStore = defineStore('bots', () => {
    * Bot 列表（按名称排序）
    */
   const botsList = computed(() =>
-    Object.values(bots.value).sort((a, b) =>
-      a.BotName.localeCompare(b.BotName)
-    )
+    Object.values(bots.value).sort((a, b) => a.BotName.localeCompare(b.BotName)),
   )
 
   /**
    * 按状态过滤 Bot
    */
-  const botsByStatus = computed(() => (status: BotStatus) =>
-    botsList.value.filter((bot) => bot.Status === status)
+  const botsByStatus = computed(
+    () => (status: BotStatus) => botsList.value.filter((bot) => bot.Status === status),
   )
 
   /**
@@ -67,7 +65,7 @@ export const useBotsStore = defineStore('bots', () => {
   const gamesRemaining = computed(() =>
     botsList.value.reduce((total, bot) => {
       return total + (bot.CardsFarmer?.GamesToFarm?.length ?? 0)
-    }, 0)
+    }, 0),
   )
 
   /**
@@ -77,12 +75,9 @@ export const useBotsStore = defineStore('bots', () => {
     botsList.value.reduce((total, bot) => {
       return (
         total +
-        (bot.CardsFarmer?.GamesToFarm?.reduce(
-          (sum, game) => sum + game.CardsRemaining,
-          0
-        ) ?? 0)
+        (bot.CardsFarmer?.GamesToFarm?.reduce((sum, game) => sum + game.CardsRemaining, 0) ?? 0)
       )
-    }, 0)
+    }, 0),
   )
 
   /**
@@ -194,7 +189,7 @@ export const useBotsStore = defineStore('bots', () => {
    */
   async function pauseBots(
     botNames: string[],
-    options?: { permanent?: boolean; resumeInSeconds?: number }
+    options?: { permanent?: boolean; resumeInSeconds?: number },
   ) {
     try {
       await pauseBot(botNames, options)
@@ -231,10 +226,7 @@ export const useBotsStore = defineStore('bots', () => {
     if (!bot.KeepRunning) return BotStatus.DISABLED
     if (!bot.IsConnectedAndLoggedOn) return BotStatus.OFFLINE
     if (bot.CardsFarmer?.Paused) return BotStatus.ONLINE
-    if (
-      !bot.CardsFarmer?.CurrentGamesFarming ||
-      bot.CardsFarmer.CurrentGamesFarming.length === 0
-    )
+    if (!bot.CardsFarmer?.CurrentGamesFarming || bot.CardsFarmer.CurrentGamesFarming.length === 0)
       return BotStatus.ONLINE
     return BotStatus.FARMING
   }

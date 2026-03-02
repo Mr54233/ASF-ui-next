@@ -154,7 +154,7 @@ async function handleRefresh() {
 
   h2 {
     margin: 0;
-    color: #e5eaf3;
+    color: var(--el-text-color-primary);
     font-size: 24px;
   }
 
@@ -165,23 +165,23 @@ async function handleRefresh() {
 }
 
 .config-card {
-  background-color: #141414;
-  border: 1px solid #2b2b2c;
+  background-color: var(--el-bg-color);
+  border: 1px solid var(--el-border-color);
 
   :deep(.el-tabs__nav) {
-    background-color: #1d1e1f;
-    border-bottom: 1px solid #2b2b2c;
+    background-color: var(--el-fill-color);
+    border-bottom: 1px solid var(--el-border-color);
   }
 
   :deep(.el-tabs__item) {
-    color: #cfd3dc;
+    color: var(--el-text-color-regular);
 
     &.is-active {
       color: #409eff;
     }
 
     &:hover {
-      color: #e5eaf3;
+      color: var(--el-text-color-primary);
     }
   }
 
@@ -195,14 +195,14 @@ async function handleRefresh() {
 }
 
 :deep(.el-form-item__label) {
-  color: #cfd3dc;
+  color: var(--el-text-color-regular);
 }
 
 :deep(.el-input__inner),
 :deep(.el-textarea__inner) {
-  background-color: #262727;
-  border-color: #4c4d4f;
-  color: #e5eaf3;
+  background-color: var(--el-fill-color-light);
+  border-color: var(--el-border-color-light);
+  color: var(--el-text-color-primary);
 }
 
 :deep(.el-input-number .el-input__inner) {

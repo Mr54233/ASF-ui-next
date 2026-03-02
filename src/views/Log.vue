@@ -106,7 +106,7 @@ onMounted(() => {
 
   h2 {
     margin: 0;
-    color: #e5eaf3;
+    color: var(--el-text-color-primary);
     font-size: 24px;
   }
 
@@ -117,8 +117,8 @@ onMounted(() => {
 }
 
 .log-card {
-  background-color: #141414;
-  border: 1px solid #2b2b2c;
+  background-color: var(--el-bg-color);
+  border: 1px solid var(--el-border-color);
 
   :deep(.el-card__body) {
     padding: 0;
@@ -136,7 +136,7 @@ onMounted(() => {
 
 .log-entry {
   padding: 8px 0;
-  border-bottom: 1px solid #262727;
+  border-bottom: 1px solid var(--el-fill-color-light);
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
@@ -146,7 +146,7 @@ onMounted(() => {
   }
 
   &.INFO {
-    color: #cfd3dc;
+    color: var(--el-text-color-regular);
   }
 
   &.WARN {
@@ -160,12 +160,12 @@ onMounted(() => {
   }
 
   &.DEBUG {
-    color: #8d9095;
+    color: var(--el-text-color-secondary);
   }
 }
 
 .log-time {
-  color: #8d9095;
+  color: var(--el-text-color-secondary);
   font-size: 12px;
   min-width: 80px;
 }
@@ -181,7 +181,7 @@ onMounted(() => {
 }
 
 .log-message {
-  color: #e5eaf3;
+  color: var(--el-text-color-primary);
   flex: 1;
   min-width: 0;
 }

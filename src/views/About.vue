@@ -7,9 +7,6 @@
           <el-descriptions-item label="框架">Vue 3 + Element Plus</el-descriptions-item>
           <el-descriptions-item label="状态">开发中</el-descriptions-item>
         </el-descriptions>
-      </template>
-
-      <template #extra>
         <div class="links">
           <el-link href="https://github.com/JustArchiNET/ArchiSteamFarm" target="_blank">
             <el-icon><Link /></el-icon>
@@ -30,17 +27,20 @@
 import { Link } from '@element-plus/icons-vue'
 </script>
 
-<style scoped lang="less">
+<style scoped>
 .about-page {
-  max-width: 800px;
-  margin: 0 auto;
   padding: 24px;
 }
 
 .links {
+  margin-top: 16px;
   display: flex;
   align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.links .el-icon {
+  margin-right: 4px;
 }
 </style>

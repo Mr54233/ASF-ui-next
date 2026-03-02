@@ -6,28 +6,15 @@
     :close-on-click-modal="false"
     destroy-on-close
   >
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="rules"
-      label-position="top"
-    >
+    <el-form ref="formRef" :model="form" :rules="rules" label-position="top">
       <!-- Bot 名称 -->
       <el-form-item label="Bot 名称" prop="botName">
-        <el-input
-          v-model="form.botName"
-          placeholder="输入 Bot 名称（例如：bot1）"
-          clearable
-        />
+        <el-input v-model="form.botName" placeholder="输入 Bot 名称（例如：bot1）" clearable />
       </el-form-item>
 
       <!-- Steam 登录 -->
       <el-form-item label="Steam 登录" prop="steamLogin">
-        <el-input
-          v-model="form.steamLogin"
-          placeholder="输入 Steam 登录名"
-          clearable
-        />
+        <el-input v-model="form.steamLogin" placeholder="输入 Steam 登录名" clearable />
       </el-form-item>
 
       <!-- Steam 密码 -->
@@ -43,25 +30,19 @@
 
       <!-- 启用 -->
       <el-form-item>
-        <el-checkbox v-model="form.enabled">
-          立即启动 Bot
-        </el-checkbox>
+        <el-checkbox v-model="form.enabled"> 立即启动 Bot </el-checkbox>
       </el-form-item>
 
       <!-- 保持运行 -->
       <el-form-item>
-        <el-checkbox v-model="form.keepRunning">
-          保持运行（KeepRunning）
-        </el-checkbox>
+        <el-checkbox v-model="form.keepRunning"> 保持运行（KeepRunning） </el-checkbox>
       </el-form-item>
     </el-form>
 
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="visible = false">取消</el-button>
-        <el-button type="primary" :loading="loading" @click="handleCreate">
-          创建
-        </el-button>
+        <el-button type="primary" :loading="loading" @click="handleCreate"> 创建 </el-button>
       </div>
     </template>
   </el-dialog>
@@ -111,9 +92,7 @@ const rules: FormRules = {
       trigger: 'blur',
     },
   ],
-  steamLogin: [
-    { required: true, message: '请输入 Steam 登录名', trigger: 'blur' },
-  ],
+  steamLogin: [{ required: true, message: '请输入 Steam 登录名', trigger: 'blur' }],
   steamPassword: [
     { required: true, message: '请输入 Steam 密码', trigger: 'blur' },
     {

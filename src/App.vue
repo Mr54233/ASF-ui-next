@@ -16,6 +16,6 @@ onMounted(() => {
 <style lang="less">
 #app {
   min-height: 100vh;
-  background-color: #0a0a0a;
+  background-color: var(--el-bg-color-page);
 }
 </style>

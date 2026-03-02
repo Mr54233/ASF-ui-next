@@ -32,12 +32,7 @@
         clearable
         @keyup.enter="handleSend"
       />
-      <el-button
-        type="primary"
-        size="large"
-        :loading="sending"
-        @click="handleSend"
-      >
+      <el-button type="primary" size="large" :loading="sending" @click="handleSend">
         发送
       </el-button>
     </div>
@@ -52,11 +47,7 @@
 
     <!-- 命令输出 -->
     <div class="command-output">
-      <div
-        v-for="(item, index) in commandOutput"
-        :key="index"
-        class="output-item"
-      >
+      <div v-for="(item, index) in commandOutput" :key="index" class="output-item">
         <div class="output-command">
           <el-icon><ArrowRight /></el-icon>
           <span class="command-text">{{ item.command }}</span>
@@ -106,12 +97,14 @@ import {
 const inputRef = ref()
 const command = ref('')
 const sending = ref(false)
-const commandOutput = ref<Array<{
-  command: string
-  output?: string
-  error?: string
-  timestamp: string
-}>>([])
+const commandOutput = ref<
+  Array<{
+    command: string
+    output?: string
+    error?: string
+    timestamp: string
+  }>
+>([])
 
 // 命令历史
 const commandHistory = ref<string[]>([])
@@ -148,12 +141,17 @@ async function handleSend() {
   try {
     // TODO: 调用命令 API
     // const result = await sendCommand(cmd)
-    const result = await new Promise<{Success: boolean; Message?: string; Result?: string}>((resolve) =>
-      setTimeout(() => resolve({
-        Success: true,
-        Message: '模拟命令输出',
-        Result: `Command "${cmd}" executed successfully\n这是一个模拟的输出结果。`,
-      }), 1000)
+    const result = await new Promise<{ Success: boolean; Message?: string; Result?: string }>(
+      (resolve) =>
+        setTimeout(
+          () =>
+            resolve({
+              Success: true,
+              Message: '模拟命令输出',
+              Result: `Command "${cmd}" executed successfully\n这是一个模拟的输出结果。`,
+            }),
+          1000,
+        ),
     )
 
     if (result.Success) {
@@ -196,31 +194,33 @@ function handleKeyNavigation(e: KeyboardEvent) {
 
   if (e.key === 'ArrowUp') {
     e.preventDefault()
-    commandHistoryIndex.value = Math.min(commandHistoryIndex.value + 1, commandHistory.value.length - 1)
+    commandHistoryIndex.value = Math.min(
+      commandHistoryIndex.value + 1,
+      commandHistory.value.length - 1,
+    )
     command.value = commandHistory.value[commandHistoryIndex.value]
   } else if (e.key === 'ArrowDown') {
     e.preventDefault()
     commandHistoryIndex.value = Math.max(commandHistoryIndex.value - 1, -1)
-    command.value = commandHistoryIndex.value >= 0 ? commandHistory.value[commandHistoryIndex.value] : ''
+    command.value =
+      commandHistoryIndex.value >= 0 ? commandHistory.value[commandHistoryIndex.value] : ''
   }
 }
 
 // 清空输出
 function handleClear() {
-  ElMessageBox.confirm(
-    '确定要清空所有命令输出吗？',
-    '确认',
-    {
-      confirmButtonText: '清空',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  ).then(() => {
-    commandOutput.value = []
-    ElMessage.success('已清空输出')
-  }).catch(() => {
-    // 用户取消
+  ElMessageBox.confirm('确定要清空所有命令输出吗？', '确认', {
+    confirmButtonText: '清空',
+    cancelButtonText: '取消',
+    type: 'warning',
   })
+    .then(() => {
+      commandOutput.value = []
+      ElMessage.success('已清空输出')
+    })
+    .catch(() => {
+      // 用户取消
+    })
 }
 
 // 组件挂载
@@ -266,22 +266,22 @@ onUnmounted(() => {
 
   h2 {
     margin: 0;
-    color: #e5eaf3;
+    color: var(--el-text-color-primary);
     font-size: 24px;
   }
 }
 
 // 常用命令
 .quick-commands {
-  background-color: #141414;
+  background-color: var(--el-bg-color);
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
-  border: 1px solid #2b2b2c;
+  border: 1px solid var(--el-border-color);
 }
 
 .section-title {
-  color: #e5eaf3;
+  color: var(--el-text-color-primary);
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 12px;
@@ -305,31 +305,31 @@ onUnmounted(() => {
 }
 
 :deep(.el-input__inner) {
-  background-color: #262727;
-  border-color: #4c4d4f;
-  color: #e5eaf3;
+  background-color: var(--el-fill-color-light);
+  border-color: var(--el-border-color-light);
+  color: var(--el-text-color-primary);
   font-family: 'Courier New', monospace;
   font-size: 14px;
 
   &::placeholder {
-    color: #8d9095;
+    color: var(--el-text-color-secondary);
   }
 }
 
 // 历史提示
 .history-hint {
   padding: 8px 12px;
-  background-color: #1d1e1f;
+  background-color: var(--el-fill-color);
   border-radius: 4px;
   margin-bottom: 20px;
 }
 
 // 命令输出
 .command-output {
-  background-color: #1d1e1f;
+  background-color: var(--el-fill-color);
   border-radius: 8px;
   padding: 16px;
-  border: 1px solid #2b2b2c;
+  border: 1px solid var(--el-border-color);
   max-height: 600px;
   overflow-y: auto;
 }
@@ -337,7 +337,7 @@ onUnmounted(() => {
 .output-item {
   margin-bottom: 16px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #262727;
+  border-bottom: 1px solid var(--el-fill-color-light);
 
   &:last-child {
     border-bottom: none;
@@ -351,17 +351,17 @@ onUnmounted(() => {
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
-  color: #e5eaf3;
+  color: var(--el-text-color-primary);
   font-family: 'Courier New', monospace;
   font-size: 14px;
   font-weight: 500;
 }
 
 .output-text {
-  background-color: #262727;
+  background-color: var(--el-fill-color-light);
   padding: 12px;
   border-radius: 4px;
-  color: #cfd3dc;
+  color: var(--el-text-color-regular);
   font-family: 'Courier New', monospace;
   font-size: 13px;
   line-height: 1.6;
@@ -385,7 +385,7 @@ onUnmounted(() => {
 }
 
 .output-time {
-  color: #8d9095;
+  color: var(--el-text-color-secondary);
   font-size: 12px;
   margin-top: 8px;
 }

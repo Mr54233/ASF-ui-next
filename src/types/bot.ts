@@ -179,7 +179,7 @@ export type BotsResponse = Record<string, Bot>
 /**
  * Bot 操作响应
  */
-export interface BotActionResponse extends GenericResponse<boolean> {}
+export type BotActionResponse = GenericResponse<boolean>
 
 /**
  * Bot 创建配置

@@ -23,14 +23,14 @@ export interface GenericResponse<T = unknown> {
 /**
  * 加密响应
  */
-export interface EncryptResponse extends GenericResponse<string> {}
+export type EncryptResponse = GenericResponse<string>
 
 /**
  * 哈希响应
  */
-export interface HashResponse extends GenericResponse<string> {}
+export type HashResponse = GenericResponse<string>
 
 /**
  * 命令响应
  */
-export interface CommandResponse extends GenericResponse<string> {}
+export type CommandResponse = GenericResponse<string>

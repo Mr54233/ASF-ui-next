@@ -166,18 +166,18 @@ if (authStore.authenticated && authStore.ipcHost) {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a 0%, #141414 100%);
+  background: linear-gradient(135deg, var(--el-bg-color-page) 0%, var(--el-bg-color) 100%);
   padding: 20px;
 }
 
 .login-card {
   width: 100%;
   max-width: 420px;
-  background-color: #1d1e1f;
+  background-color: var(--el-fill-color);
   border-radius: 16px;
   padding: 40px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  border: 1px solid #2b2b2c;
+  border: 1px solid var(--el-border-color);
 }
 
 .login-header {
@@ -196,22 +196,22 @@ if (authStore.authenticated && authStore.ipcHost) {
 }
 
 .version {
-  color: #8d9095;
+  color: var(--el-text-color-secondary);
   font-size: 14px;
 }
 
 // 表单
 :deep(.el-form-item__label) {
-  color: #cfd3dc;
+  color: var(--el-text-color-regular);
 }
 
 :deep(.el-input__inner) {
-  background-color: #262727;
-  border-color: #4c4d4f;
-  color: #e5eaf3;
+  background-color: var(--el-fill-color-light);
+  border-color: var(--el-border-color-light);
+  color: var(--el-text-color-primary);
 
   &::placeholder {
-    color: #8d9095;
+    color: var(--el-text-color-secondary);
   }
 
   &:hover {
@@ -239,7 +239,7 @@ if (authStore.authenticated && authStore.ipcHost) {
   text-align: center;
   margin-top: 24px;
   padding-top: 24px;
-  border-top: 1px solid #2b2b2c;
+  border-top: 1px solid var(--el-border-color);
 }
 
 // 响应式

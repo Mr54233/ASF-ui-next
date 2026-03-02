@@ -14,24 +14,16 @@
 
       <div class="toolbar-right">
         <el-button-group>
-          <el-button :icon="VideoPlay" @click="handleBatchStart">
-            启动
-          </el-button>
-          <el-button :icon="VideoPause" @click="handleBatchPause">
-            暂停
-          </el-button>
-          <el-button :icon="CircleCloseFilled" @click="handleBatchStop">
-            停止
-          </el-button>
-          <el-button :icon="Delete" type="danger" @click="handleBatchDelete">
-            删除
-          </el-button>
+          <el-button :icon="VideoPlay" @click="handleBatchStart"> 启动 </el-button>
+          <el-button :icon="VideoPause" @click="handleBatchPause"> 暂停 </el-button>
+          <el-button :icon="CircleCloseFilled" @click="handleBatchStop"> 停止 </el-button>
+          <el-button :icon="Delete" type="danger" @click="handleBatchDelete"> 删除 </el-button>
         </el-button-group>
       </div>
     </div>
 
     <!-- 页面标题 + 操作栏 -->
-    <div class="page-header" :class="{ 'shrink': selectedBots.length > 0 }">
+    <div class="page-header" :class="{ shrink: selectedBots.length > 0 }">
       <div class="header-left">
         <h2>Bot 管理</h2>
         <el-tag type="info" size="large">{{ botsStore.botsCount }} 个 Bot</el-tag>
@@ -43,12 +35,10 @@
           placeholder="搜索 Bot 名称或昵称"
           :prefix-icon="Search"
           clearable
-          style="width: 200px; margin-right: 12px;"
+          style="width: 200px; margin-right: 12px"
         />
 
-        <el-button type="primary" :icon="Plus" @click="handleCreateBot">
-          创建 Bot
-        </el-button>
+        <el-button type="primary" :icon="Plus" @click="handleCreateBot"> 创建 Bot </el-button>
       </div>
     </div>
 
@@ -56,9 +46,7 @@
     <div class="filter-bar">
       <el-radio-group v-model="filterStatus" @change="handleFilterChange">
         <el-radio-button :label="null">全部</el-radio-button>
-        <el-radio-button :label="BotStatus.FARMING">
-          挂卡中
-        </el-radio-button>
+        <el-radio-button :label="BotStatus.FARMING"> 挂卡中 </el-radio-button>
         <el-radio-button :label="BotStatus.ONLINE">在线</el-radio-button>
         <el-radio-button :label="BotStatus.PAUSED">暂停</el-radio-button>
         <el-radio-button :label="BotStatus.OFFLINE">离线</el-radio-button>
@@ -72,11 +60,14 @@
         v-for="bot in filteredBots"
         :key="bot.BotName"
         class="bot-card"
-        :class="{ 'paused': bot.CardsFarmer?.Paused, 'selected': isSelected(bot) }"
+        :class="{ paused: bot.CardsFarmer?.Paused, selected: isSelected(bot) }"
       >
         <!-- 复选框 -->
         <div class="card-checkbox" @click.stop>
-          <el-checkbox :model-value="isSelected(bot)" @change="(val: boolean) => handleSelect(bot, val)" />
+          <el-checkbox
+            :model-value="isSelected(bot)"
+            @change="(val: boolean) => handleSelect(bot, val)"
+          />
         </div>
 
         <!-- 卡片内容 -->
@@ -144,7 +135,12 @@
               <el-button :icon="Edit" size="small" @click.stop="handleRenameBot(bot)">
                 重命名
               </el-button>
-              <el-button :icon="Delete" type="danger" size="small" @click.stop="handleDeleteBot(bot)">
+              <el-button
+                :icon="Delete"
+                type="danger"
+                size="small"
+                @click.stop="handleDeleteBot(bot)"
+              >
                 删除
               </el-button>
             </el-button-group>
@@ -166,17 +162,10 @@
     />
 
     <!-- 创建 Bot 弹窗 -->
-    <CreateBotDialog
-      v-model="showCreateDialog"
-      @success="handleCreateSuccess"
-    />
+    <CreateBotDialog v-model="showCreateDialog" @success="handleCreateSuccess" />
 
     <!-- 重命名 Bot 弹窗 -->
-    <el-dialog
-      v-model="showRenameDialog"
-      title="重命名 Bot"
-      width="400px"
-    >
+    <el-dialog v-model="showRenameDialog" title="重命名 Bot" width="400px">
       <el-form label-position="top">
         <el-form-item label="新名称">
           <el-input
@@ -191,9 +180,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="showRenameDialog = false">取消</el-button>
-          <el-button type="primary" @click="handleConfirmRename">
-            确认
-          </el-button>
+          <el-button type="primary" @click="handleConfirmRename"> 确认 </el-button>
         </div>
       </template>
     </el-dialog>
@@ -255,18 +242,12 @@ const filterStatus = ref<BotStatus | null>(null)
 
 // 是否全选
 const isAllSelected = computed(() => {
-  return (
-    filteredBots.value.length > 0 &&
-    selectedBots.value.length === filteredBots.value.length
-  )
+  return filteredBots.value.length > 0 && selectedBots.value.length === filteredBots.value.length
 })
 
 // 是否半选
 const isIndeterminate = computed(() => {
-  return (
-    selectedBots.value.length > 0 &&
-    selectedBots.value.length < filteredBots.value.length
-  )
+  return selectedBots.value.length > 0 && selectedBots.value.length < filteredBots.value.length
 })
 
 // 过滤后的 Bot 列表
@@ -277,10 +258,7 @@ const filteredBots = computed(() => {
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
     bots = bots.filter((bot) => {
-      return (
-        bot.BotName.toLowerCase().includes(query) ||
-        bot.Nickname.toLowerCase().includes(query)
-      )
+      return bot.BotName.toLowerCase().includes(query) || bot.Nickname.toLowerCase().includes(query)
     })
   }
 
@@ -353,31 +331,25 @@ function getStatusColor(status: BotStatus) {
     case BotStatus.PAUSED:
       return '#e6a23c'
     case BotStatus.OFFLINE:
-      return '#909399'
+      return 'var(--el-text-color-secondary)'
     case BotStatus.DISABLED:
       return '#f56c6c'
     default:
-      return '#cfd3dc'
+      return 'var(--el-text-color-regular)'
   }
 }
 
 // 获取进度文本
 function getProgressText(bot: Bot) {
   const remaining =
-    bot.CardsFarmer?.GamesToFarm?.reduce(
-      (sum, game) => sum + game.CardsRemaining,
-      0
-    ) ?? 0
+    bot.CardsFarmer?.GamesToFarm?.reduce((sum, game) => sum + game.CardsRemaining, 0) ?? 0
   return `${remaining} 卡片`
 }
 
 // 获取进度百分比
 function getProgress(bot: Bot) {
   const remaining =
-    bot.CardsFarmer?.GamesToFarm?.reduce(
-      (sum, game) => sum + game.CardsRemaining,
-      0
-    ) ?? 0
+    bot.CardsFarmer?.GamesToFarm?.reduce((sum, game) => sum + game.CardsRemaining, 0) ?? 0
   // 模拟进度（实际需要从 API 获取）
   return Math.min(remaining * 10, 100)
 }
@@ -406,9 +378,7 @@ function handleSelect(bot: Bot, checked: boolean): void {
       selectedBots.value.push(bot)
     }
   } else {
-    selectedBots.value = selectedBots.value.filter(
-      (b) => b.BotName !== bot.BotName
-    )
+    selectedBots.value = selectedBots.value.filter((b) => b.BotName !== bot.BotName)
   }
 }
 
@@ -500,15 +470,11 @@ async function handleConfirmRename() {
 // 删除 Bot
 async function handleDeleteBot(bot: Bot) {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除 Bot "${bot.BotName}" 吗？`,
-      '确认删除',
-      {
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除 Bot "${bot.BotName}" 吗？`, '确认删除', {
+      confirmButtonText: '删除',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     // TODO: 调用删除 API
     // await deleteBot([bot.BotName])
@@ -534,7 +500,7 @@ async function handleBatchDelete() {
         confirmButtonText: '删除',
         cancelButtonText: '取消',
         type: 'warning',
-      }
+      },
     )
 
     // TODO: 调用批量删除 API
@@ -581,7 +547,7 @@ async function handleQuickAction(bot: Bot, action: string) {
     justify-content: space-between;
     align-items: center;
     padding: 16px;
-    background-color: #262727;
+    background-color: var(--el-fill-color-light);
     border-radius: 8px;
     margin-bottom: 16px;
     border: 1px solid #409eff;
@@ -606,13 +572,13 @@ async function handleQuickAction(bot: Bot, action: string) {
     margin-bottom: 16px;
 
     :deep(.el-radio-button__inner) {
-      background-color: #262727;
-      border-color: #4c4d4f;
-      color: #cfd3dc;
+      background-color: var(--el-fill-color-light);
+      border-color: var(--el-border-color-light);
+      color: var(--el-text-color-regular);
 
       &:hover {
-        color: #e5eaf3;
-        background-color: #363738;
+        color: var(--el-text-color-primary);
+        background-color: var(--el-fill-color-lighter);
       }
     }
 
@@ -643,7 +609,7 @@ async function handleQuickAction(bot: Bot, action: string) {
 
       h2 {
         margin: 0;
-        color: #e5eaf3;
+        color: var(--el-text-color-primary);
         font-size: 24px;
       }
     }
@@ -676,9 +642,9 @@ async function handleQuickAction(bot: Bot, action: string) {
 
 // Bot 卡片
 .bot-card {
-  background-color: #141414;
+  background-color: var(--el-bg-color);
   border-radius: 12px;
-  border: 1px solid #2b2b2c;
+  border: 1px solid var(--el-border-color);
   overflow: hidden;
   position: relative;
   transition: all 0.3s;
@@ -705,14 +671,14 @@ async function handleQuickAction(bot: Bot, action: string) {
   top: 12px;
   left: 12px;
   z-index: 10;
-  background-color: #141414;
+  background-color: var(--el-bg-color);
   border-radius: 4px;
   padding: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 
   :deep(.el-checkbox__inner) {
-    background-color: #262727;
-    border-color: #4c4d4f;
+    background-color: var(--el-fill-color-light);
+    border-color: var(--el-border-color-light);
   }
 
   :deep(.el-checkbox__input:checked .el-checkbox__inner) {
@@ -727,7 +693,7 @@ async function handleQuickAction(bot: Bot, action: string) {
   align-items: center;
   gap: 12px;
   padding: 16px;
-  border-bottom: 1px solid #2b2b2c;
+  border-bottom: 1px solid var(--el-border-color);
 }
 
 .bot-avatar {
@@ -750,7 +716,7 @@ async function handleQuickAction(bot: Bot, action: string) {
 }
 
 .bot-nickname {
-  color: #e5eaf3;
+  color: var(--el-text-color-primary);
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 4px;
@@ -760,7 +726,7 @@ async function handleQuickAction(bot: Bot, action: string) {
 }
 
 .bot-name {
-  color: #8d9095;
+  color: var(--el-text-color-secondary);
   font-size: 14px;
 }
 
@@ -789,8 +755,8 @@ async function handleQuickAction(bot: Bot, action: string) {
   }
 
   &.status-offline {
-    background-color: #90939920;
-    color: #909399;
+    background-color: var(--el-text-color-secondary) 20;
+    color: var(--el-text-color-secondary);
   }
 
   &.status-disabled {
@@ -814,12 +780,12 @@ async function handleQuickAction(bot: Bot, action: string) {
     margin-bottom: 8px;
 
     .label {
-      color: #8d9095;
+      color: var(--el-text-color-secondary);
       font-size: 12px;
     }
 
     .value {
-      color: #e5eaf3;
+      color: var(--el-text-color-primary);
       font-size: 12px;
       font-weight: 600;
     }
@@ -837,16 +803,16 @@ async function handleQuickAction(bot: Bot, action: string) {
   display: flex;
   align-items: center;
   gap: 6px;
-  background-color: #262727;
+  background-color: var(--el-fill-color-light);
   padding: 8px 12px;
   border-radius: 6px;
 
   .stat-icon {
-    color: #a3a6ad;
+    color: var(--el-text-color-secondary);
   }
 
   .stat-value {
-    color: #cfd3dc;
+    color: var(--el-text-color-regular);
     font-size: 12px;
   }
 }
@@ -854,7 +820,7 @@ async function handleQuickAction(bot: Bot, action: string) {
 // 卡片底部
 .card-footer {
   padding: 12px 16px;
-  border-top: 1px solid #2b2b2c;
+  border-top: 1px solid var(--el-border-color);
   display: flex;
   justify-content: center;
 

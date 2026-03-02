@@ -135,7 +135,7 @@ const botStatusOption = computed(() => ({
     right: 10,
     top: 'center',
     textStyle: {
-      color: '#cfd3dc',
+      color: 'var(--el-text-color-regular)',
     },
   },
   series: [
@@ -148,7 +148,11 @@ const botStatusOption = computed(() => ({
         { value: botsStore.farmingCount, name: '挂卡中', itemStyle: { color: '#67c23a' } },
         { value: botsStore.onlineCount, name: '在线', itemStyle: { color: '#409eff' } },
         { value: botsStore.pausedCount, name: '暂停', itemStyle: { color: '#e6a23c' } },
-        { value: botsStore.offlineCount, name: '离线', itemStyle: { color: '#909399' } },
+        {
+          value: botsStore.offlineCount,
+          name: '离线',
+          itemStyle: { color: 'var(--el-text-color-secondary)' },
+        },
         { value: botsStore.disabledCount, name: '禁用', itemStyle: { color: '#f56c6c' } },
       ],
       emphasis: {
@@ -209,14 +213,14 @@ const memoryOption = computed(() => {
           },
         },
         axisLabel: {
-          color: '#cfd3dc',
+          color: 'var(--el-text-color-regular)',
           fontSize: 12,
           distance: -30,
         },
         detail: {
           valueAnimation: true,
           formatter: '{value}%',
-          color: '#e5eaf3',
+          color: 'var(--el-text-color-primary)',
           fontSize: 20,
         },
         data: [{ value: percentage.toFixed(1) }],
@@ -244,7 +248,7 @@ const botRankOption = computed(() => ({
     type: 'category',
     data: botsStore.botsList.map((bot) => bot.BotName),
     axisLabel: {
-      color: '#cfd3dc',
+      color: 'var(--el-text-color-regular)',
       rotate: 45,
     },
   },
@@ -252,11 +256,11 @@ const botRankOption = computed(() => ({
     type: 'value',
     splitLine: {
       lineStyle: {
-        color: '#2b2b2c',
+        color: 'var(--el-border-color)',
       },
     },
     axisLabel: {
-      color: '#cfd3dc',
+      color: 'var(--el-text-color-regular)',
     },
   },
   series: [
@@ -287,7 +291,7 @@ const botRankOption = computed(() => ({
 
     h2 {
       margin: 0;
-      color: #e5eaf3;
+      color: var(--el-text-color-primary);
       font-size: 24px;
     }
   }
@@ -299,14 +303,14 @@ const botRankOption = computed(() => ({
 }
 
 .stat-card {
-  background-color: #141414;
+  background-color: var(--el-bg-color);
   border-radius: 8px;
   padding: 20px;
   display: flex;
   align-items: center;
   gap: 16px;
   height: 100px;
-  border: 1px solid #2b2b2c;
+  border: 1px solid var(--el-border-color);
 }
 
 .stat-icon {
@@ -340,31 +344,31 @@ const botRankOption = computed(() => ({
 }
 
 .stat-label {
-  color: #8d9095;
+  color: var(--el-text-color-secondary);
   font-size: 14px;
   margin-bottom: 8px;
 }
 
 .stat-value {
-  color: #e5eaf3;
+  color: var(--el-text-color-primary);
   font-size: 28px;
   font-weight: 600;
 }
 
 // 图表卡片
 .chart-card {
-  background-color: #141414;
+  background-color: var(--el-bg-color);
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 16px;
-  border: 1px solid #2b2b2c;
+  border: 1px solid var(--el-border-color);
 
   .chart-header {
     margin-bottom: 16px;
 
     h3 {
       margin: 0;
-      color: #e5eaf3;
+      color: var(--el-text-color-primary);
       font-size: 18px;
     }
   }

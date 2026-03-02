@@ -90,7 +90,14 @@ import { useAsfStore } from '@/stores/asf'
 import { useBotsStore } from '@/stores/bots'
 import { useSettingsStore } from '@/stores/settings'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Fold, RefreshRight, CircleClose, CircleCheckFilled, Sunny, Moon } from '@element-plus/icons-vue'
+import {
+  Fold,
+  RefreshRight,
+  CircleClose,
+  CircleCheckFilled,
+  Sunny,
+  Moon,
+} from '@element-plus/icons-vue'
 
 const router = useRouter()
 const asfStore = useAsfStore()

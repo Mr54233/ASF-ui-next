@@ -404,7 +404,7 @@ onMounted(async () => {
 
     h2 {
       margin: 0;
-      color: #e5eaf3;
+      color: var(--el-text-color-primary);
       font-size: 24px;
     }
   }
@@ -416,13 +416,13 @@ onMounted(async () => {
 }
 
 .stat-card {
-  background-color: #141414;
+  background-color: var(--el-bg-color);
   border-radius: 8px;
   padding: 16px;
   display: flex;
   align-items: center;
   gap: 12px;
-  border: 1px solid #2b2b2c;
+  border: 1px solid var(--el-border-color);
 }
 
 .stat-icon {
@@ -459,42 +459,42 @@ onMounted(async () => {
 }
 
 .stat-label {
-  color: #8d9095;
+  color: var(--el-text-color-secondary);
   font-size: 13px;
   margin-bottom: 4px;
 }
 
 .stat-value {
-  color: #e5eaf3;
+  color: var(--el-text-color-primary);
   font-size: 24px;
   font-weight: 600;
 }
 
 // Key 列表卡片
 .keys-card {
-  background-color: #141414;
-  border: 1px solid #2b2b2c;
+  background-color: var(--el-bg-color);
+  border: 1px solid var(--el-border-color);
 
   :deep(.el-card__header) {
-    background-color: #1d1e1f;
-    border-bottom: 1px solid #2b2b2c;
+    background-color: var(--el-fill-color);
+    border-bottom: 1px solid var(--el-border-color);
   }
 
   :deep(.el-table) {
     background-color: transparent;
-    color: #e5eaf3;
+    color: var(--el-text-color-primary);
   }
 
   :deep(.el-table__row) {
     background-color: transparent;
 
     &:hover > td {
-      background-color: #262727;
+      background-color: var(--el-fill-color-light);
     }
   }
 
   :deep(.el-table__body tr.current-row > td) {
-    background-color: #262727;
+    background-color: var(--el-fill-color-light);
   }
 }
 
@@ -512,13 +512,13 @@ onMounted(async () => {
 }
 
 :deep(.el-form-item__label) {
-  color: #cfd3dc;
+  color: var(--el-text-color-regular);
 }
 
 :deep(.el-textarea__inner) {
-  background-color: #262727;
-  border-color: #4c4d4f;
-  color: #e5eaf3;
+  background-color: var(--el-fill-color-light);
+  border-color: var(--el-border-color-light);
+  color: var(--el-text-color-primary);
   font-family: 'Courier New', monospace;
 }
 
