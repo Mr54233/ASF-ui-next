@@ -4,7 +4,7 @@
     <div class="sidebar-overlay" @click="settingsStore.toggleSidebar"></div>
 
     <!-- 侧边栏 -->
-    <aside class="app-sidebar" :class="{ 'collapsed': settingsStore.sidebarCollapsed }">
+    <aside class="app-sidebar" :class="{ collapsed: settingsStore.sidebarCollapsed }">
       <div class="sidebar-header">
         <div class="logo">ASF</div>
         <button class="collapse-btn" @click="settingsStore.toggleSidebar">
@@ -45,10 +45,7 @@
       <!-- Header -->
       <header class="app-header">
         <div class="header-left">
-          <div
-            class="connection-status"
-            :class="{ connected: asfStore.connected }"
-          >
+          <div class="connection-status" :class="{ connected: asfStore.connected }">
             <el-icon><CircleCheckFilled /></el-icon>
           </div>
           <span class="version">ASF {{ asfStore.version }}</span>
@@ -93,7 +90,7 @@ import { useAsfStore } from '@/stores/asf'
 import { useBotsStore } from '@/stores/bots'
 import { useSettingsStore } from '@/stores/settings'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Fold, RefreshRight, CircleClose, CircleFilled, Sunny, Moon } from '@element-plus/icons-vue'
+import { Fold, RefreshRight, CircleClose, CircleCheckFilled, Sunny, Moon } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const asfStore = useAsfStore()

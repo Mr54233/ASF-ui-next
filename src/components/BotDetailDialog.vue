@@ -25,8 +25,8 @@
           </div>
           <div class="detail-item">
             <span class="label">状态</span>
-            <el-tag :type="getStatusType(bot.Status)">
-              {{ getStatusText(bot.Status) }}
+            <el-tag :type="getStatusType(bot?.Status ?? BotStatus.OFFLINE)">
+              {{ getStatusText(bot?.Status ?? BotStatus.OFFLINE) }}
             </el-tag>
           </div>
           <div class="detail-item">
@@ -70,11 +70,7 @@
 
         <!-- 等待挂卡的游戏列表 -->
         <div v-if="bot.CardsFarmer?.GamesToFarm?.length" class="games-list">
-          <div
-            v-for="game in bot.CardsFarmer.GamesToFarm"
-            :key="game.AppID"
-            class="game-item"
-          >
+          <div v-for="game in bot.CardsFarmer.GamesToFarm" :key="game.AppID" class="game-item">
             <span class="game-name">{{ game.GameName }}</span>
             <span class="game-cards">{{ game.CardsRemaining }} 卡片</span>
             <span class="game-hours">{{ game.Hours }} 小时</span>
@@ -115,9 +111,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="visible = false">关闭</el-button>
-        <el-button type="primary" :icon="Setting" @click="handleEditConfig">
-          编辑配置
-        </el-button>
+        <el-button type="primary" :icon="Setting" @click="handleEditConfig"> 编辑配置 </el-button>
       </div>
     </template>
   </el-dialog>

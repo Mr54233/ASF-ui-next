@@ -17,8 +17,7 @@ export const encryptASF = (data: string): Promise<EncryptResponse> =>
 /**
  * 哈希数据（使用 ASF 哈希机制）
  */
-export const hashASF = (data: string): Promise<HashResponse> =>
-  http.post('/ASF/Hash', { data })
+export const hashASF = (data: string): Promise<HashResponse> => http.post('/ASF/Hash', { data })
 
 /**
  * 获取 ASF 全局信息
@@ -29,26 +28,23 @@ export const getASF = (): Promise<ASFInfo> => http.get('/ASF')
  * 更新 ASF 全局配置
  */
 export const updateASFConfig = (
-  config: Partial<ASFGlobalConfig>
+  config: Partial<ASFGlobalConfig>,
 ): Promise<GenericResponse<boolean>> => http.post('/ASF', config)
 
 /**
  * 重启 ASF
  */
-export const restartASF = (): Promise<GenericResponse<boolean>> =>
-  http.post('/ASF/Restart')
+export const restartASF = (): Promise<GenericResponse<boolean>> => http.post('/ASF/Restart')
 
 /**
  * 关闭 ASF
  */
-export const shutdownASF = (): Promise<GenericResponse<boolean>> =>
-  http.post('/ASF/Exit')
+export const shutdownASF = (): Promise<GenericResponse<boolean>> => http.post('/ASF/Exit')
 
 /**
  * 更新 ASF 到最新版本
  */
-export const updateASF = (): Promise<GenericResponse<boolean>> =>
-  http.post('/ASF/Update')
+export const updateASF = (): Promise<GenericResponse<boolean>> => http.post('/ASF/Update')
 
 /**
  * 获取所有 Bot（快捷方式）

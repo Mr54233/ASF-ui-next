@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { CreateBotConfig } from '@/types/bot'
@@ -87,7 +87,7 @@ const emit = defineEmits<Emits>()
 
 const visible = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  set: (value: boolean) => emit('update:modelValue', value),
 })
 
 const formRef = ref<FormInstance>()

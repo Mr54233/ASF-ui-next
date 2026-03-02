@@ -39,6 +39,7 @@ export const useBotsStore = defineStore('bots', () => {
    * 挂卡中的 Bot 数量
    */
   const farmingCount = computed(() => botsByStatus.value(BotStatus.FARMING).length)
+  const botsCount = computed(() => Object.keys(bots.value).length)
 
   /**
    * 在线的 Bot 数量
@@ -243,6 +244,7 @@ export const useBotsStore = defineStore('bots', () => {
     lastUpdate,
     loading,
     botsList,
+    botsCount,
     botsByStatus,
     farmingCount,
     onlineCount,

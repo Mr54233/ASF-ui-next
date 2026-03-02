@@ -92,7 +92,9 @@ export const useSettingsStore = defineStore(
      * 应用主题
      */
     function applyTheme() {
-      const isDark = theme.value === 'dark' || (theme.value === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      const isDark =
+        theme.value === 'dark' ||
+        (theme.value === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)
       document.documentElement.classList.toggle('dark', isDark)
     }
 
@@ -164,5 +166,5 @@ export const useSettingsStore = defineStore(
     persist: {
       key: 'asf-settings',
     },
-  }
+  },
 )

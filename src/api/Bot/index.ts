@@ -1,9 +1,5 @@
 import http from '@/axios'
-import type {
-  BotsResponse,
-  BotActionResponse,
-  CreateBotConfig,
-} from './types'
+import type { BotsResponse, BotActionResponse, CreateBotConfig } from './types'
 import type { Bot } from '@/types/bot'
 import type { GenericResponse } from '@/types/common'
 
@@ -17,15 +13,14 @@ export const getBots = (botNames?: string[]): Promise<BotsResponse> =>
 /**
  * 获取单个 Bot 信息
  */
-export const getBot = (botName: string): Promise<Bot> =>
-  http.get(`/Bot/${botName}`)
+export const getBot = (botName: string): Promise<Bot> => http.get(`/Bot/${botName}`)
 
 /**
  * 更新 Bot 配置
  */
 export const updateBot = (
   botName: string,
-  config: Partial<Record<string, unknown>>
+  config: Partial<Record<string, unknown>>,
 ): Promise<BotActionResponse> => http.post(`/Bot/${botName}`, config)
 
 /**
@@ -55,9 +50,8 @@ export const stopBot = (botNames: string[]): Promise<BotActionResponse> =>
  */
 export const pauseBot = (
   botNames: string[],
-  options?: { permanent?: boolean; resumeInSeconds?: number }
-): Promise<BotActionResponse> =>
-  http.post(`/Bot/${botNames.join(',')}/Pause`, options)
+  options?: { permanent?: boolean; resumeInSeconds?: number },
+): Promise<BotActionResponse> => http.post(`/Bot/${botNames.join(',')}/Pause`, options)
 
 /**
  * 恢复挂卡
@@ -68,19 +62,13 @@ export const resumeBot = (botNames: string[]): Promise<BotActionResponse> =>
 /**
  * 复制 Bot
  */
-export const copyBot = (
-  sourceBot: string,
-  targetBot: string
-): Promise<GenericResponse<boolean>> =>
+export const copyBot = (sourceBot: string, targetBot: string): Promise<GenericResponse<boolean>> =>
   http.post(`/Bot/${sourceBot}/Copy`, { TargetBot: targetBot })
 
 /**
  * 重命名 Bot
  */
-export const renameBot = (
-  oldName: string,
-  newName: string
-): Promise<BotActionResponse> =>
+export const renameBot = (oldName: string, newName: string): Promise<BotActionResponse> =>
   http.post(`/Bot/${oldName}/Rename`, { NewBotName: newName })
 
 /**
@@ -92,43 +80,29 @@ export const createBot = (config: CreateBotConfig): Promise<BotActionResponse> =
 /**
  * Bot 2FA 令牌输入
  */
-export const input2FAToken = (
-  botName: string,
-  token: string
-): Promise<BotActionResponse> => http.post(`/Bot/${botName}/2FA`, { Token: token })
+export const input2FAToken = (botName: string, token: string): Promise<BotActionResponse> =>
+  http.post(`/Bot/${botName}/2FA`, { Token: token })
 
 /**
  * Bot 密码输入
  */
-export const inputPassword = (
-  botName: string,
-  password: string
-): Promise<BotActionResponse> =>
+export const inputPassword = (botName: string, password: string): Promise<BotActionResponse> =>
   http.post(`/Bot/${botName}/Password`, { Password: password })
 
 /**
  * Bot Steam Guard 输入
  */
-export const inputSteamGuard = (
-  botName: string,
-  code: string
-): Promise<BotActionResponse> =>
+export const inputSteamGuard = (botName: string, code: string): Promise<BotActionResponse> =>
   http.post(`/Bot/${botName}/SteamGuard`, { Code: code })
 
 /**
  * Bot DeviceID 输入
  */
-export const inputDeviceID = (
-  botName: string,
-  deviceID: string
-): Promise<BotActionResponse> =>
+export const inputDeviceID = (botName: string, deviceID: string): Promise<BotActionResponse> =>
   http.post(`/Bot/${botName}/DeviceID`, { DeviceID: deviceID })
 
 /**
  * Bot SteamParentalCode 输入
  */
-export const inputSteamParentalCode = (
-  botName: string,
-  code: string
-): Promise<BotActionResponse> =>
+export const inputSteamParentalCode = (botName: string, code: string): Promise<BotActionResponse> =>
   http.post(`/Bot/${botName}/SteamParentalCode`, { Code: code })

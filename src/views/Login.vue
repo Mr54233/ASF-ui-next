@@ -6,13 +6,7 @@
         <div class="version">ArchiSteamFarm UI</div>
       </div>
 
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="rules"
-        label-position="top"
-        size="large"
-      >
+      <el-form ref="formRef" :model="form" :rules="rules" label-position="top" size="large">
         <!-- ASF 地址 -->
         <el-form-item label="ASF 地址" prop="host">
           <el-input
@@ -49,40 +43,25 @@
 
         <!-- 记住我 -->
         <el-form-item>
-          <el-checkbox v-model="form.remember">
-            记住登录信息
-          </el-checkbox>
+          <el-checkbox v-model="form.remember"> 记住登录信息 </el-checkbox>
         </el-form-item>
 
         <!-- 登录按钮 -->
         <el-form-item>
-          <el-button
-            type="primary"
-            :loading="loading"
-            @click="handleLogin"
-            class="login-btn"
-          >
+          <el-button type="primary" :loading="loading" @click="handleLogin" class="login-btn">
             登录
           </el-button>
         </el-form-item>
 
         <!-- 测试连接 -->
         <el-form-item>
-          <el-button
-            :loading="testing"
-            @click="handleTestConnection"
-            link
-          >
-            测试连接
-          </el-button>
+          <el-button :loading="testing" @click="handleTestConnection" link> 测试连接 </el-button>
         </el-form-item>
       </el-form>
 
       <!-- 底部提示 -->
       <div class="login-footer">
-        <el-text size="small" type="info">
-          首次使用？请确保 ASF IPC 接口已启用
-        </el-text>
+        <el-text size="small" type="info"> 首次使用？请确保 ASF IPC 接口已启用 </el-text>
       </div>
     </div>
   </div>
@@ -130,9 +109,7 @@ const rules: FormRules = {
       trigger: 'blur',
     },
   ],
-  password: [
-    { required: true, message: '请输入 IPC 密码', trigger: 'blur' },
-  ],
+  password: [{ required: true, message: '请输入 IPC 密码', trigger: 'blur' }],
 }
 
 // 登录

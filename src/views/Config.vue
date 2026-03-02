@@ -6,9 +6,7 @@
         <el-button type="primary" :icon="Check" @click="handleSave" :loading="saving">
           保存
         </el-button>
-        <el-button :icon="RefreshRight" @click="handleRefresh">
-          刷新
-        </el-button>
+        <el-button :icon="RefreshRight" @click="handleRefresh"> 刷新 </el-button>
       </div>
     </div>
 
@@ -35,7 +33,11 @@
         </el-tab-pane>
 
         <el-tab-pane label="Bot 配置" name="bot">
-          <el-select v-model="selectedBot" placeholder="选择 Bot" style="width: 200px; margin-bottom: 16px;">
+          <el-select
+            v-model="selectedBot"
+            placeholder="选择 Bot"
+            style="width: 200px; margin-bottom: 16px"
+          >
             <el-option
               v-for="bot in botsStore.botsList"
               :key="bot.BotName"
@@ -68,7 +70,7 @@
             v-model="jsonConfig"
             type="textarea"
             :rows="20"
-            style="font-family: monospace;"
+            style="font-family: monospace"
           />
         </el-tab-pane>
       </el-tabs>
@@ -124,15 +126,11 @@ async function handleSave() {
 // 刷新配置
 async function handleRefresh() {
   try {
-    await ElMessageBox.confirm(
-      '确定要重新加载配置吗？未保存的更改将丢失',
-      '确认刷新',
-      {
-        confirmButtonText: '刷新',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm('确定要重新加载配置吗？未保存的更改将丢失', '确认刷新', {
+      confirmButtonText: '刷新',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     ElMessage.info('配置刷新功能开发中...')
   } catch (error) {

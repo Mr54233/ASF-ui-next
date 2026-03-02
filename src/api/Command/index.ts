@@ -30,10 +30,7 @@ export const getCommands = async (): Promise<
     const result = await sendCommand('help')
     if (result.Success && result.Result) {
       const commands = parseHelpCommand(result.Result)
-      localStorage.setItem(
-        'asf-commands',
-        JSON.stringify({ timestamp: Date.now(), commands })
-      )
+      localStorage.setItem('asf-commands', JSON.stringify({ timestamp: Date.now(), commands }))
       return commands
     }
 

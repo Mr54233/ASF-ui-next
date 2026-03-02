@@ -95,8 +95,8 @@
               <div class="bot-name">{{ bot.BotName }}</div>
             </div>
 
-            <div class="bot-status" :class="getStatusClass(bot.Status)">
-              <el-icon><component :is="getStatusIcon(bot.Status)" /></el-icon>
+            <div class="bot-status" :class="getStatusClass(bot?.Status ?? BotStatus.OFFLINE)">
+              <el-icon><component :is="getStatusIcon(bot?.Status ?? BotStatus.OFFLINE)" /></el-icon>
             </div>
           </div>
 
@@ -110,7 +110,7 @@
               </div>
               <el-progress
                 :percentage="getProgress(bot)"
-                :color="getStatusColor(bot.Status)"
+                :color="getStatusColor(bot?.Status ?? BotStatus.OFFLINE)"
                 :show-text="false"
               />
             </div>
@@ -201,7 +201,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useBotsStore } from '@/stores/bots'
 import { useSettingsStore } from '@/stores/settings'
@@ -380,11 +380,6 @@ function getProgress(bot: Bot) {
     ) ?? 0
   // 模拟进度（实际需要从 API 获取）
   return Math.min(remaining * 10, 100)
-}
-
-// 创建 Bot
-async function handleCreateBot() {
-  ElMessage.info('创建 Bot 功能开发中...')
 }
 
 // 清除筛选

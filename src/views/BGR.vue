@@ -8,9 +8,7 @@
       </div>
 
       <div class="header-right">
-        <el-button type="primary" :icon="Plus" @click="showAddDialog = true">
-          添加 Key
-        </el-button>
+        <el-button type="primary" :icon="Plus" @click="showAddDialog = true"> 添加 Key </el-button>
       </div>
     </div>
 
@@ -77,7 +75,7 @@
       <el-table :data="keys" stripe style="width: 100%">
         <el-table-column prop="key" label="Key" min-width="200">
           <template #default="{ row }">
-            <el-text style="font-family: monospace;">{{ maskKey(row.key) }}</el-text>
+            <el-text style="font-family: monospace">{{ maskKey(row.key) }}</el-text>
             <el-button link size="small" @click="handleCopyKey(row.key)">
               <el-icon><CopyDocument /></el-icon>
             </el-button>
@@ -88,7 +86,12 @@
 
         <el-table-column prop="game" label="游戏" min-width="180">
           <template #default="{ row }">
-            <el-link v-if="row.game" type="primary" :href="getGameUrl(row.game.AppID)" target="_blank">
+            <el-link
+              v-if="row.game"
+              type="primary"
+              :href="getGameUrl(row.game.AppID)"
+              target="_blank"
+            >
               {{ row.game.GameName }}
             </el-link>
             <el-text v-else type="info">-</el-text>
@@ -121,12 +124,7 @@
       :close-on-click-modal="false"
       destroy-on-close
     >
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="rules"
-        label-position="top"
-      >
+      <el-form ref="formRef" :model="form" :rules="rules" label-position="top">
         <!-- Key 输入 -->
         <el-form-item label="Steam Key" prop="keys">
           <el-input
@@ -168,9 +166,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="showAddDialog = false">取消</el-button>
-          <el-button type="primary" :loading="adding" @click="handleAddKeys">
-            添加
-          </el-button>
+          <el-button type="primary" :loading="adding" @click="handleAddKeys"> 添加 </el-button>
         </div>
       </template>
     </el-dialog>
@@ -216,19 +212,19 @@ const bgrStatus = ref<BGRStatus>({
 })
 
 // Key 列表
-const keys = ref<Array<{
-  key: string
-  botName: string
-  game: any
-  status: string
-  time: string
-}>>([])
+const keys = ref<
+  Array<{
+    key: string
+    botName: string
+    game: any
+    status: string
+    time: string
+  }>
+>([])
 
 // 表单验证
 const rules = {
-  keys: [
-    { required: true, message: '请输入至少一个 Key', trigger: 'blur' },
-  ],
+  keys: [{ required: true, message: '请输入至少一个 Key', trigger: 'blur' }],
 }
 
 // 添加 Keys
@@ -240,7 +236,10 @@ async function handleAddKeys() {
     adding.value = true
 
     // 解析 Key（按行分割）
-    const keyList = form.keys.split('\n').map((k) => k.trim()).filter((k) => k.length > 0)
+    const keyList = form.keys
+      .split('\n')
+      .map((k) => k.trim())
+      .filter((k) => k.length > 0)
 
     if (keyList.length === 0) {
       ElMessage.warning('请输入有效的 Steam Key')
@@ -286,25 +285,24 @@ async function handleAddKeys() {
 
 // 复制 Key
 function handleCopyKey(key: string) {
-  navigator.clipboard.writeText(key).then(() => {
-    ElMessage.success('已复制到剪贴板')
-  }).catch(() => {
-    ElMessage.error('复制失败')
-  })
+  navigator.clipboard
+    .writeText(key)
+    .then(() => {
+      ElMessage.success('已复制到剪贴板')
+    })
+    .catch(() => {
+      ElMessage.error('复制失败')
+    })
 }
 
 // 删除 Key
 async function handleDeleteKey(row: any) {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除 Key "${maskKey(row.key)}" 吗？`,
-      '确认删除',
-      {
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除 Key "${maskKey(row.key)}" 吗？`, '确认删除', {
+      confirmButtonText: '删除',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     // TODO: 调用删除 API
     // await deleteKeysFromBGR([row.botName], [row.key])
@@ -319,15 +317,11 @@ async function handleDeleteKey(row: any) {
 // 清空队列
 async function handleClear() {
   try {
-    await ElMessageBox.confirm(
-      '确定要清空所有 Key 和兑换记录吗？',
-      '确认清空',
-      {
-        confirmButtonText: '清空',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm('确定要清空所有 Key 和兑换记录吗？', '确认清空', {
+      confirmButtonText: '清空',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     // TODO: 调用清空 API
     // await clearBGRQueue([form.botName])

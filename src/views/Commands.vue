@@ -137,6 +137,8 @@ async function handleSend() {
   const outputItem = {
     command: cmd,
     timestamp: new Date().toLocaleTimeString(),
+    output: undefined as string | undefined,
+    error: undefined as string | undefined,
   }
   commandOutput.value.push(outputItem)
 
@@ -146,7 +148,7 @@ async function handleSend() {
   try {
     // TODO: 调用命令 API
     // const result = await sendCommand(cmd)
-    const result = await new Promise((resolve) =>
+    const result = await new Promise<{Success: boolean; Message?: string; Result?: string}>((resolve) =>
       setTimeout(() => resolve({
         Success: true,
         Message: '模拟命令输出',

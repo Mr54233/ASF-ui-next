@@ -3,26 +3,15 @@
     <div class="log-header">
       <h2>日志</h2>
       <div class="header-actions">
-        <el-button :icon="RefreshRight" @click="handleRefresh">
-          刷新
-        </el-button>
-        <el-button :icon="Download" @click="handleDownload">
-          导出
-        </el-button>
-        <el-button type="danger" :icon="Delete" @click="handleClear">
-          清空
-        </el-button>
+        <el-button :icon="RefreshRight" @click="handleRefresh"> 刷新 </el-button>
+        <el-button :icon="Download" @click="handleDownload"> 导出 </el-button>
+        <el-button type="danger" :icon="Delete" @click="handleClear"> 清空 </el-button>
       </div>
     </div>
 
     <el-card class="log-card" shadow="never">
       <div class="log-content">
-        <div
-          v-for="(log, index) in logs"
-          :key="index"
-          class="log-entry"
-          :class="log.level"
-        >
+        <div v-for="(log, index) in logs" :key="index" class="log-entry" :class="log.level">
           <span class="log-time">{{ log.time }}</span>
           <span class="log-level">{{ log.level }}</span>
           <span class="log-source" v-if="log.source">[{{ log.source }}]</span>
@@ -41,12 +30,14 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { RefreshRight, Download, Delete } from '@element-plus/icons-vue'
 
 // 日志数据
-const logs = ref<Array<{
-  time: string
-  level: string
-  source?: string
-  message: string
-}>>([])
+const logs = ref<
+  Array<{
+    time: string
+    level: string
+    source?: string
+    message: string
+  }>
+>([])
 
 // 刷新日志
 function handleRefresh() {
@@ -61,15 +52,11 @@ function handleDownload() {
 // 清空日志
 async function handleClear() {
   try {
-    await ElMessageBox.confirm(
-      '确定要清空所有日志吗？',
-      '确认清空',
-      {
-        confirmButtonText: '清空',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm('确定要清空所有日志吗？', '确认清空', {
+      confirmButtonText: '清空',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
 
     logs.value = []
     ElMessage.success('已清空日志')

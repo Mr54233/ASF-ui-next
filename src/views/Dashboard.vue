@@ -265,10 +265,7 @@ const botRankOption = computed(() => ({
       type: 'bar',
       data: botsStore.botsList.map((bot) => {
         const cards =
-          bot.CardsFarmer?.GamesToFarm?.reduce(
-            (sum, game) => sum + game.CardsRemaining,
-            0
-          ) ?? 0
+          bot.CardsFarmer?.GamesToFarm?.reduce((sum, game) => sum + game.CardsRemaining, 0) ?? 0
         return cards
       }),
       itemStyle: {

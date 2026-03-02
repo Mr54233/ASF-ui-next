@@ -1,8 +1,5 @@
 import http from '@/axios'
-import type {
-  BGRStatus,
-  BGRAddResponse,
-} from '@/types/asf'
+import type { BGRStatus, BGRAddResponse } from '@/types/asf'
 import type { GenericResponse } from '@/types/common'
 
 /**
@@ -22,7 +19,7 @@ export const getBGRStatus = (botNames: string[]): Promise<BGRStatus> =>
 export const addKeysToBGR = (
   botNames: string[],
   keys: string | string[],
-  options?: { botName?: string; type?: string }
+  options?: { botName?: string; type?: string },
 ): Promise<GenericResponse<BGRAddResponse[]>> =>
   http.post(`/Bot/${botNames.join(',')}/BGR/Add`, {
     Keys: Array.isArray(keys) ? keys : [keys],
@@ -33,9 +30,7 @@ export const addKeysToBGR = (
  * 清空 BGR 队列
  * @param botNames Bot 名称列表
  */
-export const clearBGRQueue = (
-  botNames: string[]
-): Promise<GenericResponse<boolean>> =>
+export const clearBGRQueue = (botNames: string[]): Promise<GenericResponse<boolean>> =>
   http.post(`/Bot/${botNames.join(',')}/BGR/Clear`)
 
 /**
@@ -45,7 +40,7 @@ export const clearBGRQueue = (
  */
 export const deleteKeysFromBGR = (
   botNames: string[],
-  keys: string[]
+  keys: string[],
 ): Promise<GenericResponse<boolean>> =>
   http.post(`/Bot/${botNames.join(',')}/BGR/Delete`, { Keys: keys })
 
@@ -53,7 +48,5 @@ export const deleteKeysFromBGR = (
  * 重置 BGR 状态
  * @param botNames Bot 名称列表
  */
-export const resetBGRStatus = (
-  botNames: string[]
-): Promise<GenericResponse<boolean>> =>
+export const resetBGRStatus = (botNames: string[]): Promise<GenericResponse<boolean>> =>
   http.post(`/Bot/${botNames.join(',')}/BGR/Reset`)
