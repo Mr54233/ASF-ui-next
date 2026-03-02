@@ -55,6 +55,14 @@
         </div>
 
         <div class="header-right">
+          <!-- 主题切换按钮 -->
+          <el-tooltip :content="themeTooltip" placement="bottom">
+            <el-button size="small" circle @click="toggleTheme">
+              <el-icon>
+                <component :is="themeIcon" />
+              </el-icon>
+            </el-button>
+          </el-tooltip>
           <el-button size="small" @click="restartASF">
             <el-icon><RefreshRight /></el-icon>
             重启
@@ -79,13 +87,13 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAsfStore } from '@/stores/asf'
 import { useBotsStore } from '@/stores/bots'
 import { useSettingsStore } from '@/stores/settings'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Fold, RefreshRight, CircleClose, CircleFilled } from '@element-plus/icons-vue'
+import { Fold, RefreshRight, CircleClose, CircleFilled, Sunny, Moon } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const asfStore = useAsfStore()
@@ -101,10 +109,38 @@ const navItems = [
   { path: '/asf-config', label: 'ASF 配置', icon: 'Setting' },
 ]
 
+// 主题相关
+const themeIcon = computed(() => {
+  return settingsStore.theme === 'dark' ? Sunny : Moon
+})
+
+const themeTooltip = computed(() => {
+  const themes: Record<string, string> = {
+    dark: '切换到亮色主题',
+    light: '切换到暗色主题',
+    auto: '跟随系统',
+  }
+  return themes[settingsStore.theme] || '切换主题'
+})
+
+function toggleTheme() {
+  const themes: Array<'dark' | 'light' | 'auto'> = ['dark', 'light', 'auto']
+  const currentIndex = themes.indexOf(settingsStore.theme)
+  const nextTheme = themes[(currentIndex + 1) % themes.length]
+  settingsStore.setTheme(nextTheme)
+
+  const themeNames: Record<string, string> = {
+    dark: '暗色主题',
+    light: '亮色主题',
+    auto: '跟随系统',
+  }
+  ElMessage.success(`已切换到${themeNames[nextTheme]}`)
+}
+
 onMounted(() => {
   // 启动 Bot 自动更新
   botsStore.startAutoUpdate()
-  // 应用暗色主题
+  // 应用主题
   settingsStore.applyTheme()
 })
 
@@ -140,14 +176,14 @@ async function shutdownASF() {
   display: flex;
   height: 100vh;
   overflow: hidden;
-  background-color: #0a0a0a;
+  background-color: var(--el-bg-color-page);
 }
 
 // 侧边栏
 .app-sidebar {
   width: 240px;
-  background-color: #141414;
-  border-right: 1px solid #2b2b2c;
+  background-color: var(--el-bg-color);
+  border-right: 1px solid var(--el-border-color);
   display: flex;
   flex-direction: column;
   transition: width 0.3s ease;
@@ -167,27 +203,27 @@ async function shutdownASF() {
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  border-bottom: 1px solid #2b2b2c;
+  border-bottom: 1px solid var(--el-border-color);
 }
 
 .logo {
   font-size: 20px;
   font-weight: 600;
-  color: #e5eaf3;
+  color: var(--el-text-color-primary);
 }
 
 .collapse-btn {
   background: none;
   border: none;
-  color: #a3a6ad;
+  color: var(--el-text-color-secondary);
   cursor: pointer;
   padding: 4px;
   border-radius: 4px;
   transition: color 0.3s;
 
   &:hover {
-    color: #e5eaf3;
-    background-color: #262727;
+    color: var(--el-text-color-primary);
+    background-color: var(--el-fill-color-light);
   }
 }
 
@@ -203,19 +239,19 @@ async function shutdownASF() {
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  color: #cfd3dc;
+  color: var(--el-text-color-regular);
   text-decoration: none;
   border-radius: 8px;
   margin: 4px 8px;
   transition: all 0.2s;
 
   &:hover {
-    background-color: #262727;
-    color: #e5eaf3;
+    background-color: var(--el-fill-color-light);
+    color: var(--el-text-color-primary);
   }
 
   &.active {
-    background-color: #409eff;
+    background-color: var(--el-color-primary);
     color: #ffffff;
   }
 }
@@ -223,7 +259,7 @@ async function shutdownASF() {
 // 统计
 .sidebar-stats {
   padding: 16px;
-  border-top: 1px solid #2b2b2c;
+  border-top: 1px solid var(--el-border-color);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -238,22 +274,22 @@ async function shutdownASF() {
 .stat-value {
   font-size: 20px;
   font-weight: 600;
-  color: #e5eaf3;
+  color: var(--el-text-color-primary);
 
   &.farming {
-    color: #67c23a;
+    color: var(--el-color-success);
   }
 }
 
 .stat-label {
   font-size: 12px;
-  color: #8d9095;
+  color: var(--el-text-color-secondary);
 }
 
 .stat-divider {
   width: 1px;
   height: 40px;
-  background-color: #2b2b2c;
+  background-color: var(--el-border-color);
 }
 
 // 主内容区
@@ -270,8 +306,8 @@ async function shutdownASF() {
   align-items: center;
   justify-content: space-between;
   padding: 12px 24px;
-  background-color: #141414;
-  border-bottom: 1px solid #2b2b2c;
+  background-color: var(--el-bg-color);
+  border-bottom: 1px solid var(--el-border-color);
 }
 
 .header-left {
@@ -284,15 +320,15 @@ async function shutdownASF() {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: #f56c6c;
+  background-color: var(--el-color-danger);
 
   &.connected {
-    background-color: #67c23a;
+    background-color: var(--el-color-success);
   }
 }
 
 .version {
-  color: #cfd3dc;
+  color: var(--el-text-color-regular);
   font-size: 14px;
 }
 

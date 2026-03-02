@@ -31,6 +31,8 @@ import {
   ArrowRight,
   WarningFilled,
   ChatDotRound,
+  Sunny,
+  Moon,
 } from '@element-plus/icons-vue'
 
 import App from './App.vue'
@@ -69,5 +71,7 @@ app.component('ArrowUp', ArrowUp)
 app.component('ArrowRight', ArrowRight)
 app.component('WarningFilled', WarningFilled)
 app.component('ChatDotRound', ChatDotRound)
+app.component('Sunny', Sunny)
+app.component('Moon', Moon)
 
 app.mount('#app')
