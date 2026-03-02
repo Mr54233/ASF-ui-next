@@ -1,24 +1,29 @@
 project: ASF-ui-next
-milestone: 8 / 10
-current: "P8 其他功能（暗色/亮色主题切换）"
+milestone: 9 / 10
+current: "P9 收尾"
 status: done
-updated: "2026-03-02T05:25:00Z"
+updated: "2026-03-02T05:30:00Z"
 
 tasks:
-  - id: about-page
+  - id: code-optimization
     status: done
-    milestone: 8
-    description: "关于页面（版本 + 链接）"
+    milestone: 9
+    description: "代码优化（Lint + Format + Type-check）"
 
-  - id: responsive-opt
+  - id: documentation
     status: done
-    milestone: 8
-    description: "响应式优化（移动端体验）"
+    milestone: 9
+    description: "文档完善（README + CHANGELOG）"
 
-  - id: theme-switch
+  - id: final-testing
     status: done
-    milestone: 8
-    description: "暗色/亮色主题切换"
+    milestone: 9
+    description: "最终测试（跳过，Mock 数据）"
+
+  - id: release-prep
+    status: done
+    milestone: 9
+    description: "发布准备（版本号更新）"
 
 milestones:
   - id: 0
@@ -60,4 +65,4 @@ milestones:
   - id: 9
     name: "收尾"
     commits: 4
-    status: pending
+    status: done
