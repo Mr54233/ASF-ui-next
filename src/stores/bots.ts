@@ -5,6 +5,7 @@ import type { Bot } from '@/types/bot'
 import { BotStatus } from '@/types/bot'
 import { useAuthStore } from './auth'
 import { useAsfStore } from './asf'
+import { useActivitiesStore } from './activities'
 
 interface BotsState {
   bots: Record<string, Bot>
@@ -127,6 +128,10 @@ export const useBotsStore = defineStore('bots', () => {
       }
       bots.value = data
       lastUpdate.value = Date.now()
+
+      // 触发活动检测
+      const activitiesStore = useActivitiesStore()
+      activitiesStore.detectActivities(data)
     } catch (error) {
       console.error('Failed to fetch bots:', error)
     } finally {

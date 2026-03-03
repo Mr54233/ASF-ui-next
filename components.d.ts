@@ -7,8 +7,15 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ActivityStreamCard: typeof import('./src/components/dashboard/ActivityStreamCard.vue')['default']
+    AsfInfoCard: typeof import('./src/components/dashboard/AsfInfoCard.vue')['default']
     BotDetailDialog: typeof import('./src/components/BotDetailDialog.vue')['default']
+    BotsSummaryCard: typeof import('./src/components/dashboard/BotsSummaryCard.vue')['default']
+    BotStatusCard: typeof import('./src/components/dashboard/BotStatusCard.vue')['default']
+    CardsRemainingCard: typeof import('./src/components/dashboard/CardsRemainingCard.vue')['default']
     CreateBotDialog: typeof import('./src/components/CreateBotDialog.vue')['default']
+    DashboardSettings: typeof import('./src/components/dashboard/DashboardSettings.vue')['default']
+    DashboardToolbar: typeof import('./src/components/dashboard/DashboardToolbar.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElButtonGroup: typeof import('element-plus/es')['ElButtonGroup']
     ElCard: typeof import('element-plus/es')['ElCard']
@@ -18,6 +25,7 @@ declare module 'vue' {
     ElDescriptionsItem: typeof import('element-plus/es')['ElDescriptionsItem']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDivider: typeof import('element-plus/es')['ElDivider']
+    ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElEmpty: typeof import('element-plus/es')['ElEmpty']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
@@ -47,6 +55,7 @@ declare module 'vue' {
     IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
     IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
+    QuickActionsBar: typeof import('./src/components/dashboard/QuickActionsBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']

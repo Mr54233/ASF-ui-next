@@ -25,19 +25,6 @@
           <span class="nav-text">{{ item.label }}</span>
         </router-link>
       </nav>
-
-      <!-- 统计数据 -->
-      <div class="sidebar-stats" v-if="asfStore.isRunning">
-        <div class="stat-item">
-          <span class="stat-value">{{ botsStore.botsCount }}</span>
-          <span class="stat-label">Bots</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-value farming">{{ botsStore.farmingCount }}</span>
-          <span class="stat-label">挂卡中</span>
-        </div>
-      </div>
     </aside>
 
     <!-- 主内容区 -->
@@ -224,7 +211,6 @@ async function shutdownASF() {
     width: 64px;
 
     .nav-text,
-    .sidebar-stats,
     .logo {
       display: none;
     }
@@ -316,47 +302,6 @@ async function shutdownASF() {
     color: #ffffff;
     box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
   }
-}
-
-/* 侧边栏底部统计 */
-.sidebar-stats {
-  padding: 16px;
-  border-top: 1px solid var(--el-border-color-lighter);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-shrink: 0;
-  background: var(--el-fill-color-extra-light);
-}
-
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.stat-value {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--el-text-color-primary);
-  line-height: 1;
-
-  &.farming {
-    color: var(--el-color-success);
-  }
-}
-
-.stat-label {
-  font-size: 12px;
-  color: var(--el-text-color-secondary);
-  font-weight: 500;
-}
-
-.stat-divider {
-  width: 1px;
-  height: 32px;
-  background-color: var(--el-border-color);
 }
 
 /* ============================================
