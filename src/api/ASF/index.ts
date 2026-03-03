@@ -1,5 +1,5 @@
 import http from '@/axios'
-import type { GenericResponse, GenericResponseWithResult } from '@/types/common'
+import type { GenericResponse } from '@/types/common'
 
 // === 枚举类型定义 ===
 
@@ -300,7 +300,7 @@ export interface ASFUpdateConfigRequest {
  * 获取 ASF 信息
  * @returns ASF 响应信息
  */
-export const getASF = (): Promise<GenericResponseWithResult<ASFResponse>> =>
+export const getASF = (): Promise<ASFResponse> =>
   http.get('/ASF')
 
 /**
@@ -318,7 +318,7 @@ export const updateASFConfig = (config: GlobalConfig): Promise<GenericResponse> 
 export const encryptASF = (
   data: string,
   method: ECryptoMethod = ECryptoMethod.AES,
-): Promise<GenericResponseWithResult<string>> =>
+): Promise<string> =>
   http.post('/ASF/Encrypt', { CryptoMethod: method, StringToEncrypt: data } as ASFEncryptRequest)
 
 /**
@@ -329,7 +329,7 @@ export const encryptASF = (
 export const hashASF = (
   data: string,
   method: EHashingMethod = EHashingMethod.Pbkdf2,
-): Promise<GenericResponseWithResult<string>> =>
+): Promise<string> =>
   http.post('/ASF/Hash', { HashingMethod: method, StringToHash: data } as ASFHashRequest)
 
 /**
@@ -348,7 +348,7 @@ export const exitASF = (): Promise<GenericResponse> =>
  * 更新 ASF
  * @param options 更新选项
  */
-export const updateASF = (options?: UpdateRequest): Promise<GenericResponseWithResult<string>> =>
+export const updateASF = (options?: UpdateRequest): Promise<string> =>
   http.post('/ASF/Update', options ?? {})
 
 // === 兼容性别名 ===

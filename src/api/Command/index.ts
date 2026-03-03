@@ -1,5 +1,4 @@
 import http from '@/axios'
-import type { GenericResponseWithResult } from '@/types/common'
 
 /**
  * 命令请求
@@ -19,7 +18,7 @@ export interface CommandRequest {
  * 此 API 端点应完全被 /Api/ASF/{action} 和 /Api/Bot/{bot}/{action} 中的 ASF 操作替代。
  * 使用此端点时应使用 "given bot" 命令，省略命令目标将导致命令在 DefaultBot 上执行。
  */
-export const sendCommand = (command: string): Promise<GenericResponseWithResult<string>> =>
+export const sendCommand = (command: string): Promise<string> =>
   http.post('/Command', { Command: command } as CommandRequest)
 
 /**
@@ -66,16 +65,12 @@ export const getCommands = async (): Promise<CommandDescription[]> => {
 
     // 从 API 获取（执行 help 命令）
     const result = await sendCommand('help')
-    if (result.Success && result.Result) {
-      const commands = parseHelpCommand(result.Result)
-      localStorage.setItem(
-        'asf-commands',
-        JSON.stringify({ timestamp: Date.now(), commands } as CommandsCache),
-      )
-      return commands
-    }
-
-    return []
+    const commands = parseHelpCommand(result)
+    localStorage.setItem(
+      'asf-commands',
+      JSON.stringify({ timestamp: Date.now(), commands } as CommandsCache),
+    )
+    return commands
   } catch (error) {
     console.error('Failed to fetch commands:', error)
     return []

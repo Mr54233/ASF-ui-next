@@ -1,14 +1,16 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { getASF, getAllBots } from '@/api'
-import type { ASFInfo } from '@/types/asf'
+import { getASF, restartASF, exitASF, updateASF } from '@/api/ASF'
+import { getBots } from '@/api/Bot'
+import type { ASFResponse, GlobalConfig } from '@/api/ASF'
 import type { Bot } from '@/types/bot'
 import { useAuthStore } from './auth'
+import { useBotsStore } from './bots'
 
 interface ASFState {
-  info: ASFInfo | null
+  info: ASFResponse | null
   version: string
-  memoryUsage: { Used: number; Total: number } | null
+  memoryUsage: number | null
   uptime: number
   connected: boolean
   loading: boolean
@@ -16,9 +18,9 @@ interface ASFState {
 }
 
 export const useAsfStore = defineStore('asf', () => {
-  const info = ref<ASFInfo | null>(null)
+  const info = ref<ASFResponse | null>(null)
   const version = ref('')
-  const memoryUsage = ref<{ Used: number; Total: number } | null>(null)
+  const memoryUsage = ref<number | null>(null)
   const uptime = ref(0)
   const connected = ref(false)
   const loading = ref(false)
@@ -32,7 +34,16 @@ export const useAsfStore = defineStore('asf', () => {
   /**
    * Bot 数量
    */
-  const botsCount = computed(() => info.value?.BotsCount ?? 0)
+  const botsCount = computed(() => {
+    // 从 Bots store 获取
+    const botsStore = useBotsStore()
+    return botsStore.botsCount
+  })
+
+  /**
+   * 全局配置
+   */
+  const globalConfig = computed(() => info.value?.GlobalConfig)
 
   /**
    * 获取 ASF 信息
@@ -45,9 +56,15 @@ export const useAsfStore = defineStore('asf', () => {
     try {
       const data = await getASF()
       info.value = data
-      version.value = data.Version?.Version ?? ''
-      memoryUsage.value = data.MemoryUsage
-      uptime.value = data.Uptime ?? 0
+      version.value = data.Version
+      // MemoryUsage 是 KB，转换为 MB
+      const memKB = typeof data.MemoryUsage === 'string' ? parseInt(data.MemoryUsage) : data.MemoryUsage
+      memoryUsage.value = memKB ? Math.round(memKB / 1024) : null
+      // 计算运行时间（从 ProcessStartTime）
+      if (data.ProcessStartTime) {
+        const startTime = new Date(data.ProcessStartTime).getTime()
+        uptime.value = Math.floor((Date.now() - startTime) / 1000)
+      }
       connected.value = true
       lastUpdate.value = Date.now()
     } catch (error) {
@@ -63,7 +80,7 @@ export const useAsfStore = defineStore('asf', () => {
    */
   async function fetchAllBots(): Promise<Record<string, Bot>> {
     try {
-      return await getAllBots()
+      return await getBots()
     } catch (error) {
       console.error('Failed to fetch all bots:', error)
       return {}
@@ -75,8 +92,7 @@ export const useAsfStore = defineStore('asf', () => {
    */
   async function restart() {
     try {
-      // TODO: 调用重启 API
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await restartASF()
       return { success: true, message: 'ASF 正在重启...' }
     } catch (error) {
       return {
@@ -91,8 +107,7 @@ export const useAsfStore = defineStore('asf', () => {
    */
   async function shutdown() {
     try {
-      // TODO: 调用关闭 API
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await exitASF()
       return { success: true, message: 'ASF 正在关闭...' }
     } catch (error) {
       return {
@@ -107,13 +122,29 @@ export const useAsfStore = defineStore('asf', () => {
    */
   async function update() {
     try {
-      // TODO: 调用更新 API
-      await new Promise((resolve) => setTimeout(resolve, 500))
-      return { success: true, message: 'ASF 正在更新...' }
+      const result = await updateASF()
+      return { success: true, message: result || 'ASF 正在更新...' }
     } catch (error) {
       return {
         success: false,
         message: error instanceof Error ? error.message : '更新失败',
+      }
+    }
+  }
+
+  /**
+   * 更新全局配置
+   */
+  async function updateConfig(config: GlobalConfig) {
+    try {
+      const { updateASFConfig } = await import('@/api/ASF')
+      await updateASFConfig(config)
+      await fetchInfo()
+      return { success: true, message: '配置已更新' }
+    } catch (error) {
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : '更新配置失败',
       }
     }
   }
@@ -128,10 +159,12 @@ export const useAsfStore = defineStore('asf', () => {
     lastUpdate,
     isRunning,
     botsCount,
+    globalConfig,
     fetchInfo,
     fetchAllBots,
     restart,
     shutdown,
     update,
+    updateConfig,
   }
 })

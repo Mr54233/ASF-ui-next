@@ -392,4 +392,4 @@ export interface CreateBotConfig {
 }
 
 // 保持向后兼容：旧的类型名
-export { Game as GameToFarm }
+export type { Game as GameToFarm }

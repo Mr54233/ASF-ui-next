@@ -63,7 +63,7 @@ export const useAuthStore = defineStore(
     /**
      * 测试连接
      */
-    async function testConnection(host: string, port: number): Promise<GenericResponse<boolean>> {
+    async function testConnection(host: string, port: number): Promise<GenericResponse> {
       try {
         // TODO: 调用 API 测试连接
         await new Promise((resolve) => setTimeout(resolve, 300))

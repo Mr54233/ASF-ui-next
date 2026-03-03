@@ -79,7 +79,10 @@ export const useBotsStore = defineStore('bots', () => {
     botsList.value.reduce((total, bot) => {
       return (
         total +
-        (bot.CardsFarmer?.GamesToFarm?.reduce((sum, game) => sum + game.CardsRemaining, 0) ?? 0)
+        (bot.CardsFarmer?.GamesToFarm?.reduce((sum, game) => {
+          const cards = typeof game.CardsRemaining === 'string' ? parseInt(game.CardsRemaining) : game.CardsRemaining
+          return sum + (cards || 0)
+        }, 0) ?? 0)
       )
     }, 0),
   )
@@ -117,9 +120,7 @@ export const useBotsStore = defineStore('bots', () => {
 
     loading.value = true
     try {
-      const response = await getBots()
-      // 解包 Result 属性
-      const data = response.Result ?? {}
+      const data = await getBots()
       // 为每个 Bot 计算状态
       for (const key in data) {
         data[key].Status = calculateBotStatus(data[key])
@@ -198,7 +199,12 @@ export const useBotsStore = defineStore('bots', () => {
     options?: { permanent?: boolean; resumeInSeconds?: number },
   ) {
     try {
-      await pauseBot(botNames, options)
+      // 转换参数格式
+      const pauseOptions = options ? {
+        Permanent: options.permanent,
+        ResumeInSeconds: options.resumeInSeconds,
+      } : undefined
+      await pauseBot(botNames, pauseOptions)
       await fetchBots()
       return { success: true, message: '已暂停挂卡' }
     } catch (error) {

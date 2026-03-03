@@ -168,8 +168,9 @@ const botStatusOption = computed(() => ({
 
 // 内存使用（仪表盘）
 const memoryOption = computed(() => {
-  const used = asfStore.memoryUsage?.Used ?? 0
-  const total = asfStore.memoryUsage?.Total ?? 1
+  // memoryUsage 现在是 number（MB），假设最大内存为 4GB
+  const used = asfStore.memoryUsage ?? 0
+  const total = 4096 // 4GB
   const percentage = (used / total) * 100
 
   return {
@@ -269,7 +270,10 @@ const botRankOption = computed(() => ({
       type: 'bar',
       data: botsStore.botsList.map((bot) => {
         const cards =
-          bot.CardsFarmer?.GamesToFarm?.reduce((sum, game) => sum + game.CardsRemaining, 0) ?? 0
+          bot.CardsFarmer?.GamesToFarm?.reduce((sum, game) => {
+            const c = typeof game.CardsRemaining === 'string' ? parseInt(game.CardsRemaining) : game.CardsRemaining
+            return sum + (c || 0)
+          }, 0) ?? 0
         return cards
       }),
       itemStyle: {

@@ -73,7 +73,7 @@
           <div v-for="game in bot.CardsFarmer.GamesToFarm" :key="game.AppID" class="game-item">
             <span class="game-name">{{ game.GameName }}</span>
             <span class="game-cards">{{ game.CardsRemaining }} 卡片</span>
-            <span class="game-hours">{{ game.Hours }} 小时</span>
+            <span class="game-hours">{{ game.HoursPlayed }} 小时</span>
           </div>
         </div>
       </div>

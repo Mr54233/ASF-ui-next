@@ -1,13 +1,12 @@
 import http from '@/axios'
 import type {
   BotsResponse,
-  BotActionResponse,
   CreateBotConfig,
   EUserInputType,
   BotConfig,
 } from './types'
 import type { Bot, Game } from '@/types/bot'
-import type { GenericResponse, GenericResponseWithResult } from '@/types/common'
+import type { GenericResponse } from '@/types/common'
 
 // === 请求类型定义 ===
 
@@ -133,27 +132,28 @@ export interface BotInventoryResponse {
 /**
  * 获取所有 Bot 信息
  * @param botNames Bot 名称列表，不传或传空则获取所有
- * @returns Bot 列表响应
+ * @returns Bot 列表
  */
-export const getBots = (botNames?: string[]): Promise<GenericResponseWithResult<BotsResponse>> =>
+export const getBots = (botNames?: string[]): Promise<BotsResponse> =>
   http.get(`/Bot/${botNames?.join(',') ?? 'asf'}`)
 
 /**
  * 获取单个 Bot 信息
  * @param botName Bot 名称
  */
-export const getBot = (botName: string): Promise<GenericResponseWithResult<Bot>> =>
+export const getBot = (botName: string): Promise<Bot> =>
   http.get(`/Bot/${botName}`)
 
 /**
  * 更新 Bot 配置
  * @param botName Bot 名称
  * @param config Bot 配置
+ * @returns 更新结果（各 Bot 的成功状态）
  */
 export const updateBot = (
   botName: string,
   config: BotConfig,
-): Promise<GenericResponseWithResult<Record<string, boolean>>> =>
+): Promise<Record<string, boolean>> =>
   http.post(`/Bot/${botName}`, { BotConfig: config } as BotUpdateRequest)
 
 /**
@@ -254,7 +254,7 @@ export const redeemKeys = (
   botNames: string[],
   keys: string[],
   appIDs?: (number | string)[],
-): Promise<GenericResponseWithResult<Record<string, string>>> =>
+): Promise<Record<string, string>> =>
   http.post(`/Bot/${botNames.join(',')}/Redeem`, { Keys: keys, AppIDs: appIDs } as BotRedeemRequest)
 
 /**
@@ -265,7 +265,7 @@ export const redeemKeys = (
 export const redeemKeysInBackground = (
   botNames: string[],
   keys: string[],
-): Promise<GenericResponseWithResult<Record<string, boolean>>> =>
+): Promise<Record<string, boolean>> =>
   http.post(`/Bot/${botNames.join(',')}/GamesToRedeemInBackground`, {
     Keys: keys,
   } as BotGamesToRedeemInBackgroundRequest)
@@ -278,7 +278,7 @@ export const redeemKeysInBackground = (
 export const addLicense = (
   botNames: string[],
   appIDs: (number | string)[],
-): Promise<GenericResponseWithResult<Record<string, Bot>>> =>
+): Promise<Record<string, Bot>> =>
   http.post(`/Bot/${botNames.join(',')}/AddLicense`, { AppIDs: appIDs } as BotAddLicenseRequest)
 
 /**
@@ -289,7 +289,7 @@ export const addLicense = (
 export const removeLicense = (
   botNames: string[],
   appIDs: (number | string)[],
-): Promise<GenericResponseWithResult<Record<string, Bot>>> =>
+): Promise<Record<string, Bot>> =>
   http.post(`/Bot/${botNames.join(',')}/RemoveLicense`, { AppIDs: appIDs } as BotRemoveLicenseRequest)
 
 /**
@@ -298,7 +298,7 @@ export const removeLicense = (
  */
 export const getInventory = (
   botNames: string[],
-): Promise<GenericResponseWithResult<Record<string, BotInventoryResponse>>> =>
+): Promise<Record<string, BotInventoryResponse>> =>
   http.get(`/Bot/${botNames.join(',')}/Inventory`)
 
 /**
@@ -311,7 +311,7 @@ export const getGameInventory = (
   botNames: string[],
   appID: number | string,
   contextID: number | string = '6',
-): Promise<GenericResponseWithResult<Record<string, Game[]>>> =>
+): Promise<Record<string, Game[]>> =>
   http.get(`/Bot/${botNames.join(',')}/Inventory/${appID}/${contextID}`)
 
 /**
@@ -322,7 +322,7 @@ export const getGameInventory = (
 export const redeemPoints = (
   botNames: string[],
   definitionID: number | string,
-): Promise<GenericResponseWithResult<Record<string, string>>> =>
+): Promise<Record<string, string>> =>
   http.post(`/Bot/${botNames.join(',')}/RedeemPoints/${definitionID}`)
 
 /**
@@ -331,7 +331,7 @@ export const redeemPoints = (
  */
 export const getTwoFactorConfirmations = (
   botNames: string[],
-): Promise<GenericResponseWithResult<Record<string, number[]>>> =>
+): Promise<Record<string, number[]>> =>
   http.get(`/Bot/${botNames.join(',')}/TwoFactorAuthentication`)
 
 /**
@@ -342,7 +342,7 @@ export const getTwoFactorConfirmations = (
 export const handleTwoFactorConfirmations = (
   botNames: string[],
   request: TwoFactorAuthenticationConfirmationsRequest,
-): Promise<GenericResponseWithResult<Record<string, boolean>>> =>
+): Promise<Record<string, boolean>> =>
   http.post(`/Bot/${botNames.join(',')}/TwoFactorAuthentication/Confirmations`, request)
 
 /**
@@ -351,7 +351,7 @@ export const handleTwoFactorConfirmations = (
  */
 export const cancelTwoFactorConfirmations = (
   botNames: string[],
-): Promise<GenericResponseWithResult<Record<string, boolean>>> =>
+): Promise<Record<string, boolean>> =>
   http.post(`/Bot/${botNames.join(',')}/TwoFactorAuthentication`, {
     AcceptAll: false,
   } as TwoFactorAuthenticationConfirmationsRequest)
@@ -364,7 +364,7 @@ export const cancelTwoFactorConfirmations = (
 export const generateTwoFactorToken = (
   botNames: string[],
   token: string,
-): Promise<GenericResponseWithResult<Record<string, string>>> =>
+): Promise<Record<string, string>> =>
   http.post(`/Bot/${botNames.join(',')}/TwoFactorAuthentication/Token`, { Token: token })
 
 /**

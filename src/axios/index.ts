@@ -34,11 +34,18 @@ http.interceptors.request.use(
 // 响应拦截器
 http.interceptors.response.use(
   (response: AxiosResponse) => {
-    // if (response.data.code !== 200) {
-    //   return Promise.reject(response.data.message)
-    // }
-    console.log('response', response.data)
-    return response.data
+    const data = response.data
+    // ASF API 返回 GenericResponse<T> 格式：{ Success, Message, Result }
+    // 自动解包 Result 属性
+    if (data && typeof data === 'object' && 'Success' in data) {
+      // 如果有 Result 属性，返回 Result；否则返回整个对象
+      if ('Result' in data) {
+        return data.Result ?? data
+      }
+      // 没有 Result 的操作（如删除、更新），返回整个对象
+      return data
+    }
+    return data
   },
   (error) => Promise.reject(error),
 )

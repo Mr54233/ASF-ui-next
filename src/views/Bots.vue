@@ -58,7 +58,7 @@
     <div class="bots-grid">
       <div
         v-for="bot in filteredBots"
-        :key="bot.BotName"
+        :key="bot.s_SteamID ?? bot.BotName ?? Math.random()"
         class="bot-card"
         :class="{ paused: bot.CardsFarmer?.Paused, selected: isSelected(bot) }"
       >
@@ -258,7 +258,9 @@ const filteredBots = computed(() => {
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
     bots = bots.filter((bot) => {
-      return bot.BotName.toLowerCase().includes(query) || bot.Nickname.toLowerCase().includes(query)
+      const botName = bot.BotName ?? bot.s_SteamID ?? ''
+      const nickname = bot.Nickname ?? ''
+      return botName.toLowerCase().includes(query) || nickname.toLowerCase().includes(query)
     })
   }
 
@@ -342,14 +344,20 @@ function getStatusColor(status: BotStatus) {
 // 获取进度文本
 function getProgressText(bot: Bot) {
   const remaining =
-    bot.CardsFarmer?.GamesToFarm?.reduce((sum, game) => sum + game.CardsRemaining, 0) ?? 0
+    bot.CardsFarmer?.GamesToFarm?.reduce((sum, game) => {
+      const cards = typeof game.CardsRemaining === 'string' ? parseInt(game.CardsRemaining) : game.CardsRemaining
+      return sum + (cards || 0)
+    }, 0) ?? 0
   return `${remaining} 卡片`
 }
 
 // 获取进度百分比
 function getProgress(bot: Bot) {
   const remaining =
-    bot.CardsFarmer?.GamesToFarm?.reduce((sum, game) => sum + game.CardsRemaining, 0) ?? 0
+    bot.CardsFarmer?.GamesToFarm?.reduce((sum, game) => {
+      const cards = typeof game.CardsRemaining === 'string' ? parseInt(game.CardsRemaining) : game.CardsRemaining
+      return sum + (cards || 0)
+    }, 0) ?? 0
   // 模拟进度（实际需要从 API 获取）
   return Math.min(remaining * 10, 100)
 }
@@ -393,7 +401,7 @@ function handleSelectAll(checked: boolean): void {
 
 // 批量启动
 async function handleBatchStart() {
-  const botNames = selectedBots.value.map((b) => b.BotName)
+  const botNames = selectedBots.value.map((b) => b.BotName ?? b.s_SteamID ?? '').filter(Boolean)
   const result = await botsStore.startBots(botNames)
   if (result.success) {
     selectedBots.value = []
@@ -402,7 +410,7 @@ async function handleBatchStart() {
 
 // 批量暂停
 async function handleBatchPause() {
-  const botNames = selectedBots.value.map((b) => b.BotName)
+  const botNames = selectedBots.value.map((b) => b.BotName ?? b.s_SteamID ?? '').filter(Boolean)
   const result = await botsStore.pauseBots(botNames)
   if (result.success) {
     selectedBots.value = []
@@ -411,7 +419,7 @@ async function handleBatchPause() {
 
 // 批量停止
 async function handleBatchStop() {
-  const botNames = selectedBots.value.map((b) => b.BotName)
+  const botNames = selectedBots.value.map((b) => b.BotName ?? b.s_SteamID ?? '').filter(Boolean)
   const result = await botsStore.stopBots(botNames)
   if (result.success) {
     selectedBots.value = []
@@ -445,7 +453,7 @@ function handleCreateSuccess(botConfig: any) {
 // 重命名 Bot
 function handleRenameBot(bot: Bot) {
   renameBot.value = bot
-  renameForm.newName = bot.BotName
+  renameForm.newName = bot.BotName ?? bot.s_SteamID ?? ''
   showRenameDialog.value = true
 }
 
@@ -454,8 +462,9 @@ async function handleConfirmRename() {
   if (!renameForm.newName || !renameBot.value) return
 
   try {
+    const oldName = renameBot.value.BotName ?? renameBot.value.s_SteamID ?? ''
     // TODO: 调用重命名 API
-    // await renameBot(renameBot.value.BotName, renameForm.newName)
+    // await renameBot(oldName, renameForm.newName)
     await new Promise((resolve) => setTimeout(resolve, 500))
 
     ElMessage.success(`Bot 重命名为 "${renameForm.newName}"`)
@@ -518,12 +527,18 @@ async function handleBatchDelete() {
 
 // 快捷操作
 async function handleQuickAction(bot: Bot, action: string) {
+  const botName = bot.BotName ?? bot.s_SteamID ?? ''
+  if (!botName) {
+    ElMessage.error('Bot 名称无效')
+    return
+  }
+
   switch (action) {
     case 'pause':
       if (bot.CardsFarmer?.Paused) {
-        await botsStore.resumeBots([bot.BotName])
+        await botsStore.resumeBots([botName])
       } else {
-        await botsStore.pauseBots([bot.BotName])
+        await botsStore.pauseBots([botName])
       }
       break
     case '2fa':
