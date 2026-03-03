@@ -52,14 +52,6 @@
         </div>
 
         <div class="header-right">
-          <!-- 主题切换按钮 -->
-          <el-tooltip :content="themeTooltip" placement="bottom">
-            <el-button size="small" circle @click="toggleTheme">
-              <el-icon>
-                <component :is="themeIcon" />
-              </el-icon>
-            </el-button>
-          </el-tooltip>
           <el-button size="small" @click="restartASF">
             <el-icon><RefreshRight /></el-icon>
             重启
@@ -84,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAsfStore } from '@/stores/asf'
 import { useBotsStore } from '@/stores/bots'
@@ -95,8 +87,6 @@ import {
   RefreshRight,
   CircleClose,
   CircleCheckFilled,
-  Sunny,
-  Moon,
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
@@ -124,39 +114,9 @@ function isActiveRoute(path: string): boolean {
   return route.path.startsWith(path)
 }
 
-// 主题相关
-const themeIcon = computed(() => {
-  return settingsStore.theme === 'dark' ? Sunny : Moon
-})
-
-const themeTooltip = computed(() => {
-  const themes: Record<string, string> = {
-    dark: '切换到亮色主题',
-    light: '切换到暗色主题',
-    auto: '跟随系统',
-  }
-  return themes[settingsStore.theme] || '切换主题'
-})
-
-function toggleTheme() {
-  const themes: Array<'dark' | 'light' | 'auto'> = ['dark', 'light', 'auto']
-  const currentIndex = themes.indexOf(settingsStore.theme)
-  const nextTheme = themes[(currentIndex + 1) % themes.length]
-  settingsStore.setTheme(nextTheme)
-
-  const themeNames: Record<string, string> = {
-    dark: '暗色主题',
-    light: '亮色主题',
-    auto: '跟随系统',
-  }
-  ElMessage.success(`已切换到${themeNames[nextTheme]}`)
-}
-
 onMounted(() => {
   // 启动 Bot 自动更新
   botsStore.startAutoUpdate()
-  // 应用主题
-  settingsStore.applyTheme()
 })
 
 // 重启 ASF

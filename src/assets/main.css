@@ -1,85 +1,8 @@
 @import './base.css';
 
-/* Element Plus 主题变量 */
+/* Element Plus 主题变量 - 使用默认主题 */
 :root {
   --el-color-primary: #409eff;
-  --el-color-primary-light-3: #79bbff;
-  --el-color-primary-light-5: #a0cfff;
-  --el-color-primary-light-7: #c6e2ff;
-  --el-color-primary-light-8: #d9e8ff;
-  --el-color-primary-light-9: #ecf5ff;
-  --el-color-primary-dark-2: #337ecc;
-}
-
-/* 暗色模式 */
-html.dark {
-  --el-color-primary: #409eff;
-  --el-color-primary-light-3: #53a8ff;
-  --el-color-primary-light-5: #66b1ff;
-  --el-color-primary-light-7: #79bbff;
-  --el-color-primary-light-8: #8cc5ff;
-  --el-color-primary-light-9: #a0cfff;
-  --el-color-primary-dark-2: #337ecc;
-
-  /* 暗色模式背景色 */
-  --el-bg-color: #141414;
-  --el-bg-color-page: #0a0a0a;
-  --el-bg-color-overlay: #1d1e1f;
-
-  /* 文字颜色 */
-  --el-text-color-primary: #e5eaf3;
-  --el-text-color-regular: #cfd3dc;
-  --el-text-color-secondary: #a3a6ad;
-  --el-text-color-placeholder: #8d9095;
-
-  /* 边框颜色 */
-  --el-border-color: #4c4d4f;
-  --el-border-color-light: #414243;
-  --el-border-color-lighter: #363637;
-  --el-border-color-extra-light: #2b2b2c;
-
-  /* 填充颜色 */
-  --el-fill-color: #2b2b2c;
-  --el-fill-color-light: #262727;
-  --el-fill-color-lighter: #212324;
-  --el-fill-color-extra-light: #191a1c;
-  --el-fill-color-dark: #2a2a2b;
-  --el-fill-color-darker: #222224;
-
-  /* 阴影 */
-  --el-box-shadow: 0 12px 32px 4px rgba(0, 0, 0, 0.36), 0 8px 20px rgba(0, 0, 0, 0.2);
-  --el-box-shadow-light: 0 0 12px rgba(0, 0, 0, 0.72);
-  --el-box-shadow-lighter: 0 0 6px rgba(0, 0, 0, 0.54);
-  --el-box-shadow-dark: 0 16px 48px 16px rgba(0, 0, 0, 0.72);
-}
-
-/* 亮色模式 */
-html:not(.dark) {
-  --el-bg-color: #ffffff;
-  --el-bg-color-page: #f5f7fa;
-  --el-bg-color-overlay: #ffffff;
-
-  --el-text-color-primary: #303133;
-  --el-text-color-regular: #606266;
-  --el-text-color-secondary: #909399;
-  --el-text-color-placeholder: #c0c4cc;
-
-  --el-border-color: #dcdfe6;
-  --el-border-color-light: #e4e7ed;
-  --el-border-color-lighter: #ebeef5;
-  --el-border-color-extra-light: #f2f6fc;
-
-  --el-fill-color: #f5f7fa;
-  --el-fill-color-light: #f5f7fa;
-  --el-fill-color-lighter: #fafafa;
-  --el-fill-color-extra-light: #fafcff;
-  --el-fill-color-dark: #ebedf0;
-  --el-fill-color-darker: #e6e8eb;
-
-  --el-box-shadow: 0 12px 32px 4px rgba(0, 0, 0, 0.04), 0 8px 20px rgba(0, 0, 0, 0.08);
-  --el-box-shadow-light: 0 0 12px rgba(0, 0, 0, 0.12);
-  --el-box-shadow-lighter: 0 0 6px rgba(0, 0, 0, 0.12);
-  --el-box-shadow-dark: 0 16px 48px 16px rgba(0, 0, 0, 0.08);
 }
 
 /* 全局样式 - 防止全局滚动 */
@@ -92,29 +15,8 @@ body {
 }
 
 body {
-  background-color: var(--el-bg-color-page);
-  color: var(--el-text-color-primary);
-  transition:
-    background-color 0.3s,
-    color 0.3s;
-}
-
-/* 暗色模式背景渐变 */
-html.dark body {
-  background:
-    radial-gradient(ellipse at top, rgba(64, 158, 255, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(103, 194, 58, 0.05) 0%, transparent 50%),
-    var(--el-bg-color-page);
-  background-attachment: fixed;
-}
-
-/* 亮色模式背景渐变 */
-html:not(.dark) body {
-  background:
-    radial-gradient(ellipse at top, rgba(64, 158, 255, 0.05) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(103, 194, 58, 0.03) 0%, transparent 50%),
-    var(--el-bg-color-page);
-  background-attachment: fixed;
+  background-color: #f5f7fa;
+  color: #303133;
 }
 
 #app {
@@ -175,38 +77,38 @@ a,
 
 /* 玻璃态基础类 - 标准玻璃卡片 */
 .glass {
-  background: rgba(20, 20, 25, 0.6);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 16px;
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 /* 小型玻璃卡片 */
 .glass-sm {
-  background: rgba(20, 20, 25, 0.5);
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(16px) saturate(160%);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 12px;
   box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 /* 玻璃面板 - 用于内容区域 */
 .glass-panel {
-  background: rgba(18, 18, 22, 0.7);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(24px) saturate(200%);
   -webkit-backdrop-filter: blur(24px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 20px;
   box-shadow:
-    0 12px 48px rgba(0, 0, 0, 0.5),
-    inset 0 1px 1px rgba(255, 255, 255, 0.06);
+    0 12px 48px rgba(0, 0, 0, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9);
 }
 
 /* 玻璃态按钮 */
@@ -237,37 +139,6 @@ a,
     0 8px 24px rgba(64, 158, 255, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
   transform: translateY(-1px);
-}
-
-/* 亮色模式下的玻璃态 */
-html:not(.dark) .glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-html:not(.dark) .glass-sm {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7);
-}
-
-html:not(.dark) .glass-panel {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(24px) saturate(200%);
-  -webkit-backdrop-filter: blur(24px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow:
-    0 12px 48px rgba(0, 0, 0, 0.1),
-    inset 0 1px 1px rgba(255, 255, 255, 0.9);
 }
 
 /* 噪点纹理叠加 - 增加质感 */
@@ -316,7 +187,7 @@ html:not(.dark) .glass-panel {
 /* 渐变边框 */
 .glass-gradient-border {
   position: relative;
-  background: rgba(20, 20, 25, 0.6);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 16px;
@@ -366,12 +237,12 @@ html:not(.dark) .glass-panel {
 @keyframes pulse-glow {
   0%, 100% {
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.4),
+      0 8px 32px rgba(0, 0, 0, 0.08),
       0 0 20px rgba(64, 158, 255, 0.1);
   }
   50% {
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.4),
+      0 8px 32px rgba(0, 0, 0, 0.08),
       0 0 40px rgba(64, 158, 255, 0.2);
   }
 }

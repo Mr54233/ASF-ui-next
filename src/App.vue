@@ -1,13 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useSettingsStore } from '@/stores/settings'
-
-const settingsStore = useSettingsStore()
-
-onMounted(() => {
-  // 应用暗色主题
-  settingsStore.applyTheme()
-})
+// 根组件入口
 </script>
 
 <template>

@@ -6,8 +6,7 @@ interface SettingsState {
   sidebarCollapsed: boolean
   sidebarWidth: number
 
-  // 主题
-  theme: 'dark' | 'light' | 'auto'
+  // 字体大小
   fontSize: 'small' | 'medium' | 'large'
 
   // 语言
@@ -34,8 +33,7 @@ export const useSettingsStore = defineStore(
     const sidebarCollapsed = ref(false)
     const sidebarWidth = ref(240)
 
-    // 主题
-    const theme = ref<'dark' | 'light' | 'auto'>('dark')
+    // 字体大小
     const fontSize = ref<'small' | 'medium' | 'large'>('medium')
 
     // 语言
@@ -81,24 +79,6 @@ export const useSettingsStore = defineStore(
     }
 
     /**
-     * 切换主题
-     */
-    function setTheme(newTheme: 'dark' | 'light' | 'auto') {
-      theme.value = newTheme
-      applyTheme()
-    }
-
-    /**
-     * 应用主题
-     */
-    function applyTheme() {
-      const isDark =
-        theme.value === 'dark' ||
-        (theme.value === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-      document.documentElement.classList.toggle('dark', isDark)
-    }
-
-    /**
      * 设置 Bot 过滤
      */
     function setSelectedBots(statuses: string[]) {
@@ -125,7 +105,6 @@ export const useSettingsStore = defineStore(
     function resetSettings() {
       sidebarCollapsed.value = false
       sidebarWidth.value = 240
-      theme.value = 'dark'
       fontSize.value = 'medium'
       language.value = 'zh-CN'
       selectedBots.value = []
@@ -135,13 +114,11 @@ export const useSettingsStore = defineStore(
       timestamps.value = true
       autoRefresh.value = true
       notifications.value = true
-      applyTheme()
     }
 
     return {
       sidebarCollapsed,
       sidebarWidth,
-      theme,
       fontSize,
       language,
       selectedBots,
@@ -154,8 +131,6 @@ export const useSettingsStore = defineStore(
       favButtonsConfig,
       toggleSidebar,
       setSidebarWidth,
-      setTheme,
-      applyTheme,
       setSelectedBots,
       clearBotFilter,
       toggleFavButton,
