@@ -14,8 +14,6 @@ onMounted(() => {
   <router-view />
 </template>
 <style lang="less">
-#app {
-  min-height: 100vh;
-  background-color: var(--el-bg-color-page);
-}
+/* App.vue 中的 #app 样式已被 main.css 统一管理 */
+/* 这里只保留页面级别的特定样式（如有） */
 </style>
