@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard">
+  <div class="dashboard glass">
     <div class="dashboard-header">
       <h2>数据概览</h2>
       <el-tag :type="asfStore.connected ? 'success' : 'danger'" size="large">
@@ -8,7 +8,7 @@
     </div>
 
     <!-- 卡片统计 -->
-    <el-row :gutter="16" class="stats-row">
+    <el-row :gutter="16" class="stats-row glass-sm">
       <el-col :xs="24" :sm="12" :md="6">
         <div class="stat-card">
           <div class="stat-icon bot-count">
