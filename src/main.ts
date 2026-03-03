@@ -35,6 +35,10 @@ import {
   Moon,
 } from '@element-plus/icons-vue'
 
+// Element Plus 深色模式
+import 'element-plus/theme-chalk/dark/css-vars.css'
+import './assets/theme-dark.css'
+
 import App from './App.vue'
 import router from './router'
 import 'virtual:uno.css'

@@ -52,6 +52,14 @@
         </div>
 
         <div class="header-right">
+          <!-- 主题切换按钮 -->
+          <el-tooltip :content="themeTooltip" placement="bottom">
+            <el-button size="small" circle @click="toggleTheme">
+              <el-icon :size="18">
+                <component :is="themeIcon" />
+              </el-icon>
+            </el-button>
+          </el-tooltip>
           <el-button size="small" @click="restartASF">
             <el-icon><RefreshRight /></el-icon>
             重启
@@ -76,17 +84,21 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAsfStore } from '@/stores/asf'
 import { useBotsStore } from '@/stores/bots'
 import { useSettingsStore } from '@/stores/settings'
+import { useTheme } from '@/composables/useTheme'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
   Fold,
   RefreshRight,
   CircleClose,
   CircleCheckFilled,
+  Sunny,
+  Moon,
+  Monitor,
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
@@ -94,6 +106,44 @@ const route = useRoute()
 const asfStore = useAsfStore()
 const botsStore = useBotsStore()
 const settingsStore = useSettingsStore()
+
+// 主题管理
+const { themeMode, setTheme } = useTheme()
+
+// 主题图标
+const themeIcon = computed(() => {
+  const icons = {
+    light: Sunny,
+    dark: Moon,
+    auto: Monitor,
+  }
+  return icons[themeMode.value]
+})
+
+// 主题提示文字
+const themeTooltip = computed(() => {
+  const tooltips = {
+    light: '当前：亮色模式，点击切换到深色',
+    dark: '当前：深色模式，点击切换到跟随系统',
+    auto: '当前：跟随系统，点击切换到亮色',
+  }
+  return tooltips[themeMode.value]
+})
+
+// 切换主题（循环切换：light -> dark -> auto -> light）
+const toggleTheme = () => {
+  const modes: Array<'light' | 'dark' | 'auto'> = ['light', 'dark', 'auto']
+  const currentIndex = modes.indexOf(themeMode.value)
+  const nextMode = modes[(currentIndex + 1) % modes.length]
+  setTheme(nextMode)
+
+  const modeNames: Record<string, string> = {
+    light: '亮色模式',
+    dark: '深色模式',
+    auto: '跟随系统',
+  }
+  ElMessage.success(`已切换到${modeNames[nextMode]}`)
+}
 
 // 导航菜单
 const navItems = [
