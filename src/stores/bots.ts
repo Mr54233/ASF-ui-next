@@ -23,7 +23,11 @@ export const useBotsStore = defineStore('bots', () => {
    * Bot 列表（按名称排序）
    */
   const botsList = computed(() =>
-    Object.values(bots.value).sort((a, b) => a.BotName.localeCompare(b.BotName)),
+    Object.values(bots.value).sort((a, b) => {
+      const aName = a.BotName ?? a.s_SteamID ?? ''
+      const bName = b.BotName ?? b.s_SteamID ?? ''
+      return aName.localeCompare(bName)
+    }),
   )
 
   /**
@@ -113,7 +117,9 @@ export const useBotsStore = defineStore('bots', () => {
 
     loading.value = true
     try {
-      const data = await getBots()
+      const response = await getBots()
+      // 解包 Result 属性
+      const data = response.Result ?? {}
       // 为每个 Bot 计算状态
       for (const key in data) {
         data[key].Status = calculateBotStatus(data[key])
@@ -226,8 +232,9 @@ export const useBotsStore = defineStore('bots', () => {
     if (!bot.KeepRunning) return BotStatus.DISABLED
     if (!bot.IsConnectedAndLoggedOn) return BotStatus.OFFLINE
     if (bot.CardsFarmer?.Paused) return BotStatus.ONLINE
-    if (!bot.CardsFarmer?.CurrentGamesFarming || bot.CardsFarmer.CurrentGamesFarming.length === 0)
-      return BotStatus.ONLINE
+    // 检查是否有游戏在挂卡
+    const gamesFarming = bot.CardsFarmer?.CurrentGamesFarming?.length ?? 0
+    if (gamesFarming === 0) return BotStatus.ONLINE
     return BotStatus.FARMING
   }
 

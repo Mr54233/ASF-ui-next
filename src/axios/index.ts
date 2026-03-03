@@ -13,11 +13,18 @@ const http: AxiosInstance = axios.create({
 // 请求拦截器
 http.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const Authentication = localStorage.getItem('Authentication')
-    if (Authentication) {
-      // config.headers = config.headers || {}
-      config.headers.Authentication = Authentication
-      console.log('config', config)
+    // 从 pinia persist 的存储中读取 token
+    const authData = localStorage.getItem('asf-auth')
+    if (authData) {
+      try {
+        const parsed = JSON.parse(authData)
+        const token = parsed.token
+        if (token) {
+          config.headers.Authentication = token
+        }
+      } catch (e) {
+        console.error('Failed to parse auth data:', e)
+      }
     }
     return config
   },

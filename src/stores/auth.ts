@@ -35,7 +35,7 @@ export const useAuthStore = defineStore(
         // 暂时模拟登录成功
         await new Promise((resolve) => setTimeout(resolve, 500))
 
-        token.value = btoa(`${host}:${port}:${password}`)
+        token.value = password // IPC 密码直接作为 token
         ipcHost.value = host
         ipcPort.value = port
         authenticated.value = true
