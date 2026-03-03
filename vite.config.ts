@@ -3,7 +3,6 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
-import { viteMockServe } from 'vite-plugin-mock'
 
 import { codeInspectorPlugin } from 'code-inspector-plugin'
 import UnoCSS from 'unocss/vite'
@@ -16,9 +15,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/Api': {
-        target: 'http://192.168.31.236:1243',
+        target: 'http://192.168.31.60:1243',
         changeOrigin: true,
-        // rewrite: (path) => path.replace(/^\/Api/, ''),
       },
     },
   },
@@ -26,10 +24,6 @@ export default defineConfig({
     vue(),
     vueJsx(),
     vueDevTools(),
-    viteMockServe({
-      mockPath: 'mock',
-      enable: process.env.VITE_USE_MOCK !== 'false',
-    }),
     codeInspectorPlugin({
       bundler: 'vite',
     }),
