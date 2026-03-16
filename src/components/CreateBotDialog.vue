@@ -53,6 +53,8 @@ import { ref, reactive, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { CreateBotConfig } from '@/types/bot'
+import { createBot } from '@/api/Bot'
+import { useBotsStore } from '@/stores/bots'
 
 interface Props {
   modelValue: boolean
@@ -73,6 +75,7 @@ const visible = computed({
 
 const formRef = ref<FormInstance>()
 const loading = ref(false)
+const botsStore = useBotsStore()
 
 const form = reactive({
   botName: '',
@@ -89,6 +92,30 @@ const rules: FormRules = {
     {
       pattern: /^[a-zA-Z0-9_-]+$/,
       message: '名称只能包含字母、数字、下划线、短横线',
+      trigger: 'blur',
+    },
+    {
+      validator: (_rule: any, value: string, callback: any) => {
+        if (value === 'ASF') {
+          callback(new Error('Bot 名称不能为 ASF'))
+        } else {
+          callback()
+        }
+      },
+      trigger: 'blur',
+    },
+    {
+      validator: (_rule: any, value: string, callback: any) => {
+        // 检查 Bot 名称是否已存在
+        const exists = botsStore.botsList.some(
+          (bot) => (bot.BotName || bot.s_SteamID) === value,
+        )
+        if (exists) {
+          callback(new Error(`Bot "${value}" 已存在`))
+        } else {
+          callback()
+        }
+      },
       trigger: 'blur',
     },
   ],
@@ -111,19 +138,8 @@ async function handleCreate() {
 
     loading.value = true
 
-    // TODO: 调用创建 API
-    // const result = await createBot({
-    //   BotName: form.botName,
-    //   SteamLogin: form.steamLogin,
-    //   SteamPassword: form.steamPassword,
-    //   Enabled: form.enabled,
-    //   KeepRunning: form.keepRunning,
-    // })
-
-    // 模拟延迟
-    await new Promise((resolve) => setTimeout(resolve, 500))
-
-    emit('success', {
+    // 调用创建 API
+    const result = await createBot({
       BotName: form.botName,
       SteamLogin: form.steamLogin,
       SteamPassword: form.steamPassword,
@@ -131,14 +147,29 @@ async function handleCreate() {
       KeepRunning: form.keepRunning,
     } as CreateBotConfig)
 
-    ElMessage.success(`Bot "${form.botName}" 创建成功`)
-    visible.value = false
+    if (result.Success) {
+      // 刷新 Bot 列表
+      await botsStore.fetchBots()
 
-    // 重置表单
-    formRef.value?.resetFields()
+      emit('success', {
+        BotName: form.botName,
+        SteamLogin: form.steamLogin,
+        SteamPassword: form.steamPassword,
+        Enabled: form.enabled,
+        KeepRunning: form.keepRunning,
+      } as CreateBotConfig)
+
+      ElMessage.success(`Bot "${form.botName}" 创建成功`)
+      visible.value = false
+
+      // 重置表单
+      formRef.value?.resetFields()
+    } else {
+      ElMessage.error(result.Message || '创建 Bot 失败')
+    }
   } catch (error) {
     console.error('Create bot error:', error)
-    ElMessage.error('创建 Bot 失败')
+    ElMessage.error(error instanceof Error ? error.message : '创建 Bot 失败')
   } finally {
     loading.value = false
   }

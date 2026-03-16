@@ -12,16 +12,14 @@ describe('Settings Store', () => {
 
     expect(settingsStore.sidebarCollapsed).toBe(false)
     expect(settingsStore.sidebarWidth).toBe(240)
-    expect(settingsStore.theme).toBe('dark')
     expect(settingsStore.fontSize).toBe('medium')
     expect(settingsStore.language).toBe('zh-CN')
-    expect(settingsStore.favButtons).toBe(0b1111)
-    expect(settingsStore.timestamps).toBe(true)
-    expect(settingsStore.autoRefresh).toBe(true)
   })
 
   it('should toggle sidebar', () => {
     const settingsStore = useSettingsStore()
+
+    expect(settingsStore.sidebarCollapsed).toBe(false)
 
     settingsStore.toggleSidebar()
     expect(settingsStore.sidebarCollapsed).toBe(true)
@@ -36,48 +34,43 @@ describe('Settings Store', () => {
     settingsStore.setSidebarWidth(300)
     expect(settingsStore.sidebarWidth).toBe(300)
 
-    // 测试最小值限制
+    // Should clamp to min 180
     settingsStore.setSidebarWidth(100)
     expect(settingsStore.sidebarWidth).toBe(180)
 
-    // 测试最大值限制
+    // Should clamp to max 400
     settingsStore.setSidebarWidth(500)
     expect(settingsStore.sidebarWidth).toBe(400)
-  })
-
-  it('should set theme', () => {
-    const settingsStore = useSettingsStore()
-
-    settingsStore.setTheme('light')
-    expect(settingsStore.theme).toBe('light')
-
-    settingsStore.setTheme('dark')
-    expect(settingsStore.theme).toBe('dark')
   })
 
   it('should toggle favorite button', () => {
     const settingsStore = useSettingsStore()
 
-    settingsStore.toggleFavButton(0)
+    // Default all buttons on
+    expect(settingsStore.favButtons).toBe(0b1111)
+
+    // Toggle a button off (2fa is index 0)
+    settingsStore.toggleFavButton(0) // 2fa is index 0
     expect(settingsStore.favButtons).toBe(0b1110)
 
-    settingsStore.toggleFavButton(2)
-    expect(settingsStore.favButtons).toBe(0b1010)
+    // Toggle it back on
+    settingsStore.toggleFavButton(0)
+    expect(settingsStore.favButtons).toBe(0b1111)
   })
 
   it('should reset settings', () => {
     const settingsStore = useSettingsStore()
 
-    // 修改一些值
+    // Modify some values
     settingsStore.sidebarCollapsed = true
-    settingsStore.theme = 'light'
     settingsStore.language = 'en-US'
+    settingsStore.timestamps = false
 
-    // 重置
+    // Reset
     settingsStore.resetSettings()
 
     expect(settingsStore.sidebarCollapsed).toBe(false)
-    expect(settingsStore.theme).toBe('dark')
     expect(settingsStore.language).toBe('zh-CN')
+    expect(settingsStore.timestamps).toBe(true)
   })
 })

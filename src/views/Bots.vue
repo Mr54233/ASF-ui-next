@@ -1,29 +1,7 @@
 <template>
   <div class="bots-page">
-    <!-- 批量操作栏 -->
-    <div v-if="selectedBots.length > 0" class="batch-toolbar">
-      <div class="toolbar-left">
-        <el-checkbox
-          :indeterminate="isIndeterminate"
-          :model-value="isAllSelected"
-          @change="handleSelectAll"
-        >
-          已选 {{ selectedBots.length }} 个
-        </el-checkbox>
-      </div>
-
-      <div class="toolbar-right">
-        <el-button-group>
-          <el-button :icon="VideoPlay" @click="handleBatchStart"> 启动 </el-button>
-          <el-button :icon="VideoPause" @click="handleBatchPause"> 暂停 </el-button>
-          <el-button :icon="CircleCloseFilled" @click="handleBatchStop"> 停止 </el-button>
-          <el-button :icon="Delete" type="danger" @click="handleBatchDelete"> 删除 </el-button>
-        </el-button-group>
-      </div>
-    </div>
-
     <!-- 页面标题 + 操作栏 -->
-    <div class="page-header" :class="{ shrink: selectedBots.length > 0 }">
+    <div class="page-header">
       <div class="header-left">
         <h2>Bot 管理</h2>
         <el-tag type="info" size="large">{{ botsStore.botsCount }} 个 Bot</el-tag>
@@ -60,16 +38,8 @@
         v-for="bot in filteredBots"
         :key="bot.s_SteamID ?? bot.BotName ?? Math.random()"
         class="bot-card"
-        :class="{ paused: bot.CardsFarmer?.Paused, selected: isSelected(bot) }"
+        :class="{ paused: bot.CardsFarmer?.Paused }"
       >
-        <!-- 复选框 -->
-        <div class="card-checkbox" @click.stop>
-          <el-checkbox
-            :model-value="isSelected(bot)"
-            @change="(val: boolean) => handleSelect(bot, val)"
-          />
-        </div>
-
         <!-- 卡片内容 -->
         <div @click="handleShowDetail(bot)">
           <!-- 卡片头部 -->
@@ -128,7 +98,7 @@
                 :type="btn.name === 'pause' && bot.CardsFarmer?.Paused ? 'success' : 'default'"
                 :icon="btn.icon"
                 size="small"
-                @click="handleQuickAction(bot, btn.name)"
+                @click.stop="handleQuickAction(bot, btn.name)"
               >
                 {{ btn.label }}
               </el-button>
@@ -164,6 +134,25 @@
     <!-- 创建 Bot 弹窗 -->
     <CreateBotDialog v-model="showCreateDialog" @success="handleCreateSuccess" />
 
+    <!-- Bot 配置弹窗 -->
+    <BotConfigDialog
+      v-model="showConfigDialog"
+      :bot="configBot"
+      @saved="handleConfigSaved"
+    />
+
+    <!-- Bot 2FA 弹窗 -->
+    <Bot2FADialog
+      v-model="show2FADialog"
+      :bot="bot2FA"
+    />
+
+    <!-- BGR 后台兑换弹窗 -->
+    <BGRDialog
+      v-model="showBGRDialog"
+      :bot="bgrBot"
+    />
+
     <!-- 重命名 Bot 弹窗 -->
     <el-dialog v-model="showRenameDialog" title="重命名 Bot" width="400px">
       <el-form label-position="top">
@@ -195,6 +184,7 @@ import { useSettingsStore } from '@/stores/settings'
 import { BotStatus } from '@/types/bot'
 import type { Bot } from '@/types/bot'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { renameBot, deleteBot } from '@/api/Bot'
 import {
   Plus,
   Grid,
@@ -214,6 +204,9 @@ import {
 } from '@element-plus/icons-vue'
 import BotDetailDialog from '@/components/BotDetailDialog.vue'
 import CreateBotDialog from '@/components/CreateBotDialog.vue'
+import BotConfigDialog from '@/components/BotConfigDialog.vue'
+import Bot2FADialog from '@/components/Bot2FADialog.vue'
+import BGRDialog from '@/components/BGRDialog.vue'
 
 const router = useRouter()
 const botsStore = useBotsStore()
@@ -223,32 +216,32 @@ const settingsStore = useSettingsStore()
 const showDetailDialog = ref(false)
 const selectedBot = ref<Bot | null>(null)
 
+// Bot 配置弹窗
+const showConfigDialog = ref(false)
+const configBot = ref<Bot | null>(null)
+
+
+// Bot 2FA 弹窗
+const show2FADialog = ref(false)
+const bot2FA = ref<Bot | null>(null)
+
+// BGR 后台兑换弹窗
+const showBGRDialog = ref(false)
+const bgrBot = ref<Bot | null>(null)
+
 // 创建 Bot 弹窗
 const showCreateDialog = ref(false)
 
 // 重命名弹窗
 const showRenameDialog = ref(false)
-const renameBot = ref<Bot | null>(null)
+const botToRename = ref<Bot | null>(null)
 const renameForm = reactive({
   newName: '',
 })
 
-// 批量选择
-const selectedBots = ref<Bot[]>([])
-
 // 搜索和筛选
 const searchQuery = ref('')
 const filterStatus = ref<BotStatus | null>(null)
-
-// 是否全选
-const isAllSelected = computed(() => {
-  return filteredBots.value.length > 0 && selectedBots.value.length === filteredBots.value.length
-})
-
-// 是否半选
-const isIndeterminate = computed(() => {
-  return selectedBots.value.length > 0 && selectedBots.value.length < filteredBots.value.length
-})
 
 // 过滤后的 Bot 列表
 const filteredBots = computed(() => {
@@ -276,8 +269,8 @@ const filteredBots = computed(() => {
 const quickButtons = computed(() => {
   const config = settingsStore.favButtonsConfig
   const buttons = [
-    { name: '2fa', icon: Lock, label: '2FA' },
-    { name: 'bgr', icon: Key, label: 'BGR' },
+    { name: '2fa', icon: Lock, label: '双重验证' },
+    { name: 'bgr', icon: Key, label: '后台兑换' },
     { name: 'config', icon: Setting, label: '配置' },
     { name: 'pause', icon: VideoPause, label: '暂停' },
   ]
@@ -370,60 +363,7 @@ function handleClearFilter() {
 
 // 筛选变化
 function handleFilterChange() {
-  // 筛选时清空选中
-  selectedBots.value = []
-}
-
-// 检查是否选中
-function isSelected(bot: Bot): boolean {
-  return selectedBots.value.some((b) => b.BotName === bot.BotName)
-}
-
-// 选择/取消选择 Bot
-function handleSelect(bot: Bot, checked: boolean): void {
-  if (checked) {
-    if (!isSelected(bot)) {
-      selectedBots.value.push(bot)
-    }
-  } else {
-    selectedBots.value = selectedBots.value.filter((b) => b.BotName !== bot.BotName)
-  }
-}
-
-// 全选/取消全选
-function handleSelectAll(checked: boolean): void {
-  if (checked) {
-    selectedBots.value = [...filteredBots.value]
-  } else {
-    selectedBots.value = []
-  }
-}
-
-// 批量启动
-async function handleBatchStart() {
-  const botNames = selectedBots.value.map((b) => b.BotName ?? b.s_SteamID ?? '').filter(Boolean)
-  const result = await botsStore.startBots(botNames)
-  if (result.success) {
-    selectedBots.value = []
-  }
-}
-
-// 批量暂停
-async function handleBatchPause() {
-  const botNames = selectedBots.value.map((b) => b.BotName ?? b.s_SteamID ?? '').filter(Boolean)
-  const result = await botsStore.pauseBots(botNames)
-  if (result.success) {
-    selectedBots.value = []
-  }
-}
-
-// 批量停止
-async function handleBatchStop() {
-  const botNames = selectedBots.value.map((b) => b.BotName ?? b.s_SteamID ?? '').filter(Boolean)
-  const result = await botsStore.stopBots(botNames)
-  if (result.success) {
-    selectedBots.value = []
-  }
+  // 筛选时可以做一些操作
 }
 
 // 显示 Bot 详情
@@ -434,8 +374,15 @@ function handleShowDetail(bot: Bot) {
 
 // 编辑配置
 function handleEditConfig(bot: Bot) {
-  ElMessage.info('编辑配置功能开发中...')
-  // TODO: 打开配置编辑器
+  configBot.value = bot
+  showConfigDialog.value = true
+}
+
+// 配置保存成功回调
+function handleConfigSaved(bot: Bot) {
+  ElMessage.success(`Bot "${bot.BotName}" 配置已保存`)
+  // 刷新 Bot 列表
+  botsStore.fetchBots()
 }
 
 // 创建 Bot
@@ -452,27 +399,58 @@ function handleCreateSuccess(botConfig: any) {
 
 // 重命名 Bot
 function handleRenameBot(bot: Bot) {
-  renameBot.value = bot
+  botToRename.value = bot
   renameForm.newName = bot.BotName ?? bot.s_SteamID ?? ''
   showRenameDialog.value = true
 }
 
 // 确认重命名
 async function handleConfirmRename() {
-  if (!renameForm.newName || !renameBot.value) return
+  if (!renameForm.newName || !botToRename.value) return
 
   try {
-    const oldName = renameBot.value.BotName ?? renameBot.value.s_SteamID ?? ''
-    // TODO: 调用重命名 API
-    // await renameBot(oldName, renameForm.newName)
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    // 验证新名称
+    const newName = renameForm.newName.trim()
 
-    ElMessage.success(`Bot 重命名为 "${renameForm.newName}"`)
-    showRenameDialog.value = false
-    // TODO: 刷新 Bot 列表
+    // 不能为 ASF
+    if (newName === 'ASF') {
+      ElMessage.error('Bot 名称不能为 ASF')
+      return
+    }
+
+    // 检查名称格式
+    if (!/^[a-zA-Z0-9_-]+$/.test(newName)) {
+      ElMessage.error('名称只能包含字母、数字、下划线、短横线')
+      return
+    }
+
+    // 检查名称是否已存在（排除当前 Bot）
+    const exists = botsStore.botsList.some(
+      (bot) => (bot.BotName || bot.s_SteamID) === newName && bot !== botToRename.value,
+    )
+    if (exists) {
+      ElMessage.error(`Bot "${newName}" 已存在`)
+      return
+    }
+
+    const oldName = botToRename.value.BotName ?? botToRename.value.s_SteamID ?? ''
+
+    // 调用重命名 API
+    const result = await renameBot(oldName, newName)
+
+    if (result.Success) {
+      // 刷新 Bot 列表
+      await botsStore.fetchBots()
+
+      ElMessage.success(`Bot 重命名为 "${newName}"`)
+      showRenameDialog.value = false
+      renameForm.newName = ''
+    } else {
+      ElMessage.error(result.Message || '重命名失败')
+    }
   } catch (error) {
     console.error('Rename error:', error)
-    ElMessage.error('重命名失败')
+    ElMessage.error(error instanceof Error ? error.message : '重命名失败')
   }
 }
 
@@ -485,43 +463,25 @@ async function handleDeleteBot(bot: Bot) {
       type: 'warning',
     })
 
-    // TODO: 调用删除 API
-    // await deleteBot([bot.BotName])
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    const botName = bot.BotName ?? bot.s_SteamID ?? ''
 
-    ElMessage.success(`Bot "${bot.BotName}" 已删除`)
-    // TODO: 刷新 Bot 列表
+    // 调用删除 API
+    const result = await deleteBot([botName])
+
+    if (result.Success) {
+      // 刷新 Bot 列表
+      await botsStore.fetchBots()
+
+      ElMessage.success(`Bot "${botName}" 已删除`)
+    } else {
+      ElMessage.error(result.Message || '删除失败')
+    }
   } catch (error) {
-    // 用户取消
-  }
-}
-
-// 批量删除
-async function handleBatchDelete() {
-  if (selectedBots.value.length === 0) return
-
-  const names = selectedBots.value.map((b) => b.BotName).join(', ')
-  try {
-    await ElMessageBox.confirm(
-      `确定要删除选中的 ${selectedBots.value.length} 个 Bot 吗？\n${names}`,
-      '确认批量删除',
-      {
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
-        type: 'warning',
-      },
-    )
-
-    // TODO: 调用批量删除 API
-    // const botNames = selectedBots.value.map((b) => b.BotName)
-    // await deleteBot(botNames)
-    await new Promise((resolve) => setTimeout(resolve, 500))
-
-    ElMessage.success(`已删除 ${selectedBots.value.length} 个 Bot`)
-    selectedBots.value = []
-    // TODO: 刷新 Bot 列表
-  } catch (error) {
-    // 用户取消
+    // 用户取消或错误
+    if (error !== 'cancel') {
+      console.error('Delete error:', error)
+      ElMessage.error(error instanceof Error ? error.message : '删除失败')
+    }
   }
 }
 
@@ -533,6 +493,9 @@ async function handleQuickAction(bot: Bot, action: string) {
     return
   }
 
+  // 先关闭详情弹窗
+  showDetailDialog.value = false
+
   switch (action) {
     case 'pause':
       if (bot.CardsFarmer?.Paused) {
@@ -542,13 +505,17 @@ async function handleQuickAction(bot: Bot, action: string) {
       }
       break
     case '2fa':
-      ElMessage.info('2FA 功能开发中...')
+      // 打开 2FA 管理弹窗
+      bot2FA.value = bot
+      show2FADialog.value = true
       break
     case 'bgr':
-      ElMessage.info('BGR 功能开发中...')
+      // 打开后台兑换弹窗
+      bgrBot.value = bot
+      showBGRDialog.value = true
       break
     case 'config':
-      ElMessage.info('配置功能开发中...')
+      handleEditConfig(bot)
       break
   }
 }
