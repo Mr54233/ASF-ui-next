@@ -40,81 +40,78 @@
         class="bot-card"
         :class="{ paused: bot.CardsFarmer?.Paused }"
       >
-        <!-- 卡片内容 -->
-        <div @click="handleShowDetail(bot)">
-          <!-- 卡片头部 -->
-          <div class="card-header">
-            <div class="bot-avatar">
-              <img
-                :src="`https://avatars.steamstatic.com/${bot.AvatarHash}_full.jpg`"
-                :alt="bot.Nickname"
-              />
-            </div>
-
-            <div class="bot-info">
-              <div class="bot-nickname">{{ bot.Nickname }}</div>
-              <div class="bot-name">{{ bot.BotName }}</div>
-            </div>
-
-            <div class="bot-status" :class="getStatusClass(bot?.Status ?? BotStatus.OFFLINE)">
-              <el-icon><component :is="getStatusIcon(bot?.Status ?? BotStatus.OFFLINE)" /></el-icon>
-            </div>
+        <!-- 卡片头部 - 可点击打开详情 -->
+        <div class="card-header" @click="handleShowDetail(bot)">
+          <div class="bot-avatar">
+            <img
+              :src="`https://avatars.steamstatic.com/${bot.AvatarHash}_full.jpg`"
+              :alt="bot.Nickname"
+            />
           </div>
 
-          <!-- 卡片内容 -->
-          <div class="card-body">
-            <!-- 挂卡进度 -->
-            <div class="farming-progress">
-              <div class="progress-info">
-                <span class="label">挂卡进度</span>
-                <span class="value">{{ getProgressText(bot) }}</span>
-              </div>
-              <el-progress
-                :percentage="getProgress(bot)"
-                :color="getStatusColor(bot?.Status ?? BotStatus.OFFLINE)"
-                :show-text="false"
-              />
-            </div>
-
-            <!-- 统计信息 -->
-            <div class="bot-stats">
-              <div class="stat">
-                <span class="stat-icon"><Grid /></span>
-                <span class="stat-value">{{ bot.GamesToRedeemInBackgroundCount }} BGR</span>
-              </div>
-              <div class="stat">
-                <span class="stat-icon"><Timer /></span>
-                <span class="stat-value">{{ bot.CardsFarmer?.TimeRemaining || '-' }}</span>
-              </div>
-            </div>
+          <div class="bot-info">
+            <div class="bot-nickname">{{ bot.Nickname }}</div>
+            <div class="bot-name">{{ bot.BotName }}</div>
           </div>
 
-          <!-- 卡片底部 - 快捷按钮 -->
-          <div class="card-footer">
-            <el-button-group>
-              <el-button
-                v-for="btn in quickButtons"
-                :key="btn.name"
-                :type="btn.name === 'pause' && bot.CardsFarmer?.Paused ? 'success' : 'default'"
-                :icon="btn.icon"
-                size="small"
-                @click.stop="handleQuickAction(bot, btn.name)"
-              >
-                {{ btn.label }}
-              </el-button>
-              <el-button :icon="Edit" size="small" @click.stop="handleRenameBot(bot)">
-                重命名
-              </el-button>
-              <el-button
-                :icon="Delete"
-                type="danger"
-                size="small"
-                @click.stop="handleDeleteBot(bot)"
-              >
-                删除
-              </el-button>
-            </el-button-group>
+          <div class="bot-status" :class="getStatusClass(bot?.Status ?? BotStatus.OFFLINE)">
+            <el-icon><component :is="getStatusIcon(bot?.Status ?? BotStatus.OFFLINE)" /></el-icon>
           </div>
+        </div>
+
+        <!-- 卡片内容 - 可点击打开详情 -->
+        <div class="card-body" @click="handleShowDetail(bot)">
+          <!-- 挂卡进度 -->
+          <div class="farming-progress">
+            <div class="progress-info">
+              <span class="label">挂卡进度</span>
+              <span class="value">{{ getProgressText(bot) }}</span>
+            </div>
+            <el-progress
+              :percentage="getProgress(bot)"
+              :color="getStatusColor(bot?.Status ?? BotStatus.OFFLINE)"
+              :show-text="false"
+            />
+          </div>
+
+          <!-- 统计信息 -->
+          <div class="bot-stats">
+            <div class="stat">
+              <span class="stat-icon"><Grid /></span>
+              <span class="stat-value">{{ bot.GamesToRedeemInBackgroundCount }} BGR</span>
+            </div>
+            <div class="stat">
+              <span class="stat-icon"><Timer /></span>
+              <span class="stat-value">{{ bot.CardsFarmer?.TimeRemaining || '-' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 卡片底部 - 快捷按钮（不可点击打开详情） -->
+        <div class="card-footer">
+          <el-button-group>
+            <el-button
+              v-for="btn in quickButtons"
+              :key="btn.name"
+              :type="btn.name === 'pause' && bot.CardsFarmer?.Paused ? 'success' : 'default'"
+              :icon="btn.icon"
+              size="small"
+              @click="handleQuickAction(bot, btn.name)"
+            >
+              {{ btn.label }}
+            </el-button>
+            <el-button :icon="Edit" size="small" @click="handleRenameBot(bot)">
+              重命名
+            </el-button>
+            <el-button
+              :icon="Delete"
+              type="danger"
+              size="small"
+              @click="handleDeleteBot(bot)"
+            >
+              删除
+            </el-button>
+          </el-button-group>
         </div>
       </div>
     </div>
@@ -129,6 +126,7 @@
       v-model="showDetailDialog"
       :bot="selectedBot"
       @edit-config="handleEditConfig"
+      @action="handleDetailAction"
     />
 
     <!-- 创建 Bot 弹窗 -->
@@ -151,6 +149,13 @@
     <BGRDialog
       v-model="showBGRDialog"
       :bot="bgrBot"
+    />
+
+    <!-- Bot 复制弹窗 -->
+    <BotCopyDialog
+      v-model="showCopyDialog"
+      :bot="copyBotSource"
+      @success="handleCopySuccess"
     />
 
     <!-- 重命名 Bot 弹窗 -->
@@ -207,6 +212,7 @@ import CreateBotDialog from '@/components/CreateBotDialog.vue'
 import BotConfigDialog from '@/components/BotConfigDialog.vue'
 import Bot2FADialog from '@/components/Bot2FADialog.vue'
 import BGRDialog from '@/components/BGRDialog.vue'
+import BotCopyDialog from '@/components/BotCopyDialog.vue'
 
 const router = useRouter()
 const botsStore = useBotsStore()
@@ -228,6 +234,10 @@ const bot2FA = ref<Bot | null>(null)
 // BGR 后台兑换弹窗
 const showBGRDialog = ref(false)
 const bgrBot = ref<Bot | null>(null)
+
+// Bot 复制弹窗
+const showCopyDialog = ref(false)
+const copyBotSource = ref<Bot | null>(null)
 
 // 创建 Bot 弹窗
 const showCreateDialog = ref(false)
@@ -378,11 +388,58 @@ function handleEditConfig(bot: Bot) {
   showConfigDialog.value = true
 }
 
+// 处理详情弹窗的操作
+function handleDetailAction(bot: Bot, action: string) {
+  const botName = bot.BotName ?? bot.s_SteamID ?? ''
+  if (!botName) {
+    ElMessage.error('Bot 名称无效')
+    return
+  }
+
+  switch (action) {
+    case 'config':
+      handleEditConfig(bot)
+      break
+    case 'bgr':
+      bgrBot.value = bot
+      showBGRDialog.value = true
+      break
+    case '2fa':
+      bot2FA.value = bot
+      show2FADialog.value = true
+      break
+    case 'pause':
+      botsStore.pauseBots([botName])
+      break
+    case 'resume':
+      botsStore.resumeBots([botName])
+      break
+    case 'start':
+      botsStore.startBots([botName])
+      break
+    case 'stop':
+      botsStore.stopBots([botName])
+      break
+    case 'copy':
+      copyBotSource.value = bot
+      showCopyDialog.value = true
+      break
+    case 'delete':
+      handleDeleteBot(bot)
+      break
+  }
+}
+
 // 配置保存成功回调
 function handleConfigSaved(bot: Bot) {
   ElMessage.success(`Bot "${bot.BotName}" 配置已保存`)
   // 刷新 Bot 列表
   botsStore.fetchBots()
+}
+
+// 复制成功回调
+function handleCopySuccess(botName: string) {
+  ElMessage.success(`Bot "${botName}" 复制成功`)
 }
 
 // 创建 Bot
